@@ -1,0 +1,221 @@
+//
+//  LanMuThreeFilterViewModel.m
+//  cbox
+//
+//  Created by 王江亮 on 16/7/15.
+//  Copyright © 2016年 tjianli. All rights reserved.
+//
+
+#import "LanMuThreeFilterViewModel.h"
+
+@implementation LanMuThreeFilterViewModel{
+    
+    //广告url
+    NSString* advertisementLinkUrl;
+}
+
+
++ (instancetype)lanMuThreeFilterViewModel{
+
+    LanMuThreeFilterViewModel *viewModel = [[LanMuThreeFilterViewModel alloc] init];
+    return viewModel;
+}
+
+//请求数据
+- (void)lanMuThreeFilterViewModelFirst: (ColumnBaseButton *)firstBtn secondBtn: (ColumnBaseButton *)secondBtn thirdBtn: (ColumnBaseButton *)thirdBtn Success:(SuccessBlock)successBlock failBlock:(FailureBlock)failBlock filterPage:(NSInteger)filterPage{
+    
+    if (_isLanmu == YES) {
+        
+//        if (filterPage == 1) {
+//            [self.channelData removeAllObjects];
+//        }
+        
+        FilterItemBody *firstModel = firstBtn.model;
+        FilterItemBody *secondModel = secondBtn.model;
+        FilterItemBody *thirdModel = thirdBtn.model;
+        
+        NSString *zhuUrl = URLBYTAG(LANMUSX_URL);
+        NSString *typeUrl = [NSString stringWithFormat:@"%@&n=20&p=%ld&t=json", zhuUrl, filterPage];
+        
+        NSString *firstStr;
+        if ([firstModel.stype isEqualToString:@""]) {
+            firstStr = @"";
+        }else{
+            firstStr = [NSString stringWithFormat:@"&%@=%@", firstBtn.type, firstModel.stype];
+        }
+        
+        NSString *secondStr;
+        if ([secondModel.stype isEqualToString:@""]) {
+            secondStr = @"";
+        }else{
+            secondStr = [NSString stringWithFormat:@"&%@=%@",secondBtn.type, secondModel.stype];
+        }
+        
+        NSString *thirdStr;
+        if ([thirdModel.stype isEqualToString:@""]) {
+            thirdStr = @"";
+        }else{
+            thirdStr = [NSString stringWithFormat:@"&%@=%@",thirdBtn.type, thirdModel.stype];
+        }
+        
+        NSString *url = [NSString stringWithFormat:@"%@%@%@%@",typeUrl, firstStr, secondStr, thirdStr];
+        
+        NSString *UTFUrl = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        
+        weakedSelf
+        [CNRequest requestGet:@"shaixuan" url:UTFUrl success:^(id responds) {
+            
+            if (filterPage == 1) {
+                [weakSelf.channelData removeAllObjects];
+            }
+            
+            NSMutableDictionary *dic = (NSMutableDictionary *)responds[@"response"];
+            NSMutableArray *docs = dic[@"docs"];
+            for (ColumnChannelModel *model in [ColumnChannelModel parserColumnChannelModel:docs]) {
+                [weakSelf.channelData addObject:model];
+            }
+            
+            if (successBlock) {
+                successBlock(weakSelf.channelData);
+            }
+            
+        } failure:^(NSError *error) {
+            
+            if (failBlock) {
+                failBlock(error);
+            }
+            
+        }];
+
+        
+    }else{
+    
+        FilterItemBody *firstModel = firstBtn.model;
+        FilterItemBody *secondModel = secondBtn.model;
+        FilterItemBody *thirdModel = thirdBtn.model;
+        
+        NSString *zhuUrl = URLBYTAG(MORE_FILTER_VMS_API);
+        NSString *typeUrl = [NSString stringWithFormat:@"%@&%@&n=30&p=%ld&t=json", zhuUrl, _cidStr, filterPage];
+        
+        NSString *firstStr;
+        if ([firstModel.stype isEqualToString:@""]) {
+            firstStr = @"";
+        }else{
+            firstStr = [NSString stringWithFormat:@"&%@=%@", firstBtn.type, firstModel.stype];
+        }
+        
+        NSString *secondStr;
+        if ([secondModel.stype isEqualToString:@""]) {
+            secondStr = @"";
+        }else{
+            secondStr = [NSString stringWithFormat:@"&%@=%@",secondBtn.type, secondModel.stype];
+        }
+        
+        NSString *thirdStr;
+        if ([thirdModel.stype isEqualToString:@""]) {
+            thirdStr = @"";
+        }else{
+            thirdStr = [NSString stringWithFormat:@"&%@=%@",thirdBtn.type, thirdModel.stype];
+        }
+        
+        NSString *url = [NSString stringWithFormat:@"%@%@%@%@",typeUrl, firstStr, secondStr, thirdStr];
+        
+        NSString *UTFUrl = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        
+        weakedSelf
+        [CNRequest requestGet:@"shaixuan" url:UTFUrl success:^(id responds) {
+            
+            if (filterPage == 1) {
+                [self.channelData removeAllObjects];
+            }
+            
+            NSMutableArray *dic = [FilterListItem parseFilterListItemList:responds];
+            
+            for (FilterListItem *model in dic) {
+                [weakSelf.channelData addObject:model];
+            }
+            
+            if (successBlock) {
+                successBlock(weakSelf.channelData);
+            }
+        } failure:^(NSError *error) {
+            
+            if (failBlock) {
+                failBlock(nil);
+            }
+        }];
+    }
+
+    
+}
+
+
+- (NSMutableArray *)channelData{
+    
+    if (_channelData == nil) {
+        _channelData = [[NSMutableArray alloc] init];
+    }
+    return _channelData;
+}
+
+
+//广告
+- (void)lanMuThreeADModelWithSuccess: (SuccessBlock)successBlock failBlock: (FailureBlock)failBlock{
+    
+    ADListModel *adlist = [ADListModel sharedInstance];
+    advertisementLinkUrl = [self updateAdLinkUrlParameter:adlist.shuaixuanfuceng_banner];
+    weakedSelf
+    [CNRequest requestGet:advertisementLinkUrl url:advertisementLinkUrl success:^(id responds) {
+        //轮播图广告数据
+        weakSelf.adData = [AdvertisementModel parseAdvertisementModel:responds];
+        
+        //有数据返回，无数据为空
+        if ( weakSelf.adData!= nil  && weakSelf.adData.url !=nil  && ![weakSelf.adData.url isEqualToString:@""]){
+            
+            if (successBlock) {
+                successBlock (self.adData);
+            }
+        }else{
+            if (successBlock) {
+                successBlock (nil);
+            }
+        }
+        
+    } failure:^(NSError *error) {
+        if (failBlock) {
+            failBlock (nil);
+        }
+    }];
+}
+
+
+
+-(NSString*) updateAdLinkUrlParameter:(NSString*) adLinkUrl{
+    
+    if   (adLinkUrl== nil || [adLinkUrl  isEqualToString:@""])
+    {
+        return @"";
+    }
+    
+    NSString *resultString;
+    NSString * timeStamp1 =[NSString stringWithFormat:@"%lld",(long long)[[NSDate  date] timeIntervalSince1970]] ;
+    resultString = [adLinkUrl stringByReplacingOccurrencesOfString:@"{random}" withString:timeStamp1];
+    resultString = [resultString stringByReplacingOccurrencesOfString:@"{width}" withString:[NSString stringWithFormat:@"%d",273]];  //273广告宽度
+    resultString = [resultString stringByReplacingOccurrencesOfString:@"{height}" withString:[NSString stringWithFormat:@"%d",42]];   //42广告高度
+    NSString *p1 =@"";  // 暂时用空字符串
+    NSString *p2=@"";   // 暂时用空字符串
+    resultString = [resultString stringByReplacingOccurrencesOfString:@"{p1}" withString:p1];
+    resultString = [resultString stringByReplacingOccurrencesOfString:@"{p2}" withString:p2];
+    
+    return resultString;
+
+}
+
+- (void)noLanMuCreatData{
+
+    
+}
+
+@end

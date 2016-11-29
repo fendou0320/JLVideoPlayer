@@ -1,0 +1,125 @@
+//
+//  ColumnFilterOpenViewModel.m
+//  cbox
+//
+//  Created by 王江亮 on 16/7/14.
+//  Copyright © 2016年 tjianli. All rights reserved.
+//
+
+#import "ColumnFilterOpenViewModel.h"
+
+@implementation ColumnFilterOpenViewModel{
+
+    //广告url
+    NSString* advertisementLinkUrl;
+}
+
+
++ (instancetype)columnFilterOpenViewModel{
+    
+    ColumnFilterOpenViewModel *viewModel = [[ColumnFilterOpenViewModel alloc] init];
+    return viewModel;
+}
+
+
+- (void)columnFilterOpenViewModelWithUrl: (NSString *)url Success:(SuccessBlock)successBlock failBlock:(FailureBlock)failBlock filterPage:(NSInteger)filterPage{
+    
+    weakedSelf
+    [CNRequest requestGet:@"diertaoluojicolumnFilter" url:url success:^(id responds) {
+        weakSelf.dataArray = [FilterListItem7PE parseFilterListItem7PEList:responds];
+        
+        //请求广告数据
+        [weakSelf ADFilterOpenViewModelWithSuccess:^(id responds) {
+            
+            if (successBlock) {
+                successBlock(responds);
+            }
+        } failBlock:^(NSError *error) {
+            if (successBlock) {
+                successBlock(error);
+            }
+        }];
+        
+    } failure:^(NSError *error) {
+        if (failBlock) {
+            failBlock(nil);
+        }
+    }];
+}
+
+
+- (NSMutableArray *)dataArray{
+
+    if (_dataArray == nil) {
+        _dataArray = [[NSMutableArray alloc] init];
+    }
+    return _dataArray;
+}
+
+
+//广告
+- (void)ADFilterOpenViewModelWithSuccess: (SuccessBlock)successBlock failBlock: (FailureBlock)failBlock{
+
+    ADListModel *adlist = [ADListModel sharedInstance];
+//    advertisementLinkUrl = [self updateAdLinkUrlParameter:adlist.dianboshouye_icon];
+    advertisementLinkUrl = [self updateAdLinkUrlParameter:adlist.shuaixuanfuceng_banner];
+    weakedSelf
+    [CNRequest requestGet:advertisementLinkUrl url:advertisementLinkUrl success:^(id responds) {
+        //轮播图广告数据
+        weakSelf.adData = [AdvertisementModel parseAdvertisementModel:responds];
+        
+        //有数据返回，无数据为空
+        if ( weakSelf.adData!= nil  && weakSelf.adData.url !=nil  && ![weakSelf.adData.url isEqualToString:@""]){
+            
+            if (successBlock) {
+                successBlock (self.adData);
+            }
+        }else{
+            if (successBlock) {
+                successBlock (nil);
+            }
+        }
+        
+    } failure:^(NSError *error) {
+        if (failBlock) {
+            failBlock (nil);
+        }
+    }];
+}
+
+//if(returnJson.count>0)
+//{
+//    filterAdData = [AdvertisementModel parseAdvertisementModel:returnJson];
+//    if (didLoadFilterAd == NO )
+//    {
+//        if ( filterAdData!= nil  && filterAdData.url !=nil  && ![filterAdData.url isEqualToString:@""])
+//        {
+//            [self loadFilterAd];
+//        }
+//    }
+//}
+//
+
+
+-(NSString*) updateAdLinkUrlParameter:(NSString*) adLinkUrl{
+    
+    if   (adLinkUrl== nil || [adLinkUrl  isEqualToString:@""])
+    {
+        return @"";
+    }
+    
+    NSString *resultString;
+    NSString * timeStamp1 =[NSString stringWithFormat:@"%lld",(long long)[[NSDate  date] timeIntervalSince1970]] ;
+    resultString = [adLinkUrl stringByReplacingOccurrencesOfString:@"{random}" withString:timeStamp1];
+    resultString = [resultString stringByReplacingOccurrencesOfString:@"{width}" withString:[NSString stringWithFormat:@"%d",273]];  //273广告宽度
+    resultString = [resultString stringByReplacingOccurrencesOfString:@"{height}" withString:[NSString stringWithFormat:@"%d",42]];   //42广告高度
+    NSString *p1 =@"";  // 暂时用空字符串
+    NSString *p2=@"";   // 暂时用空字符串
+    resultString = [resultString stringByReplacingOccurrencesOfString:@"{p1}" withString:p1];
+    resultString = [resultString stringByReplacingOccurrencesOfString:@"{p2}" withString:p2];
+    
+    return resultString;
+}
+
+
+@end

@@ -1,0 +1,24 @@
+//
+//  ColumnFilterOpenViewModel.h
+//  cbox
+//
+//  Created by 王江亮 on 16/7/14.
+//  Copyright © 2016年 tjianli. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface ColumnFilterOpenViewModel : NSObject
+
+@property (nonatomic, strong) NSMutableArray *dataArray;
+@property (nonatomic, strong) AdvertisementModel *adData;
+
++ (instancetype)columnFilterOpenViewModel;
+
+//请求数据
+- (void)columnFilterOpenViewModelWithUrl: (NSString *)url Success:(SuccessBlock)successBlock failBlock:(FailureBlock)failBlock filterPage:(NSInteger)filterPage;
+
+//请求广告
+- (void)ADFilterOpenViewModelWithSuccess: (SuccessBlock)successBlock failBlock: (FailureBlock)failBlock;
+
+@end

@@ -1,0 +1,28 @@
+//
+//  ChosenCollectionViewCell.h
+//  cbox
+//
+//  Created by 王江亮 on 16/6/30.
+//  Copyright © 2016年 tjianli. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "ColumnChosenSecondModel.h"
+//#import "ColumnChosenModel.h"
+#import "ColumnViewModel.h"
+
+@interface ChosenCollectionViewCell : UICollectionViewCell
+
+//@property (nonatomic, strong) ColumnChosenModel *model;
+@property (nonatomic, strong) CategoryItemMode *model;
+@property (nonatomic, strong) ColumnChosenSecondModel *secondModel;
+
+@property (nonatomic, strong) FavModel *favModel;
+
++ (instancetype)chosenCollectionViewCell: (UICollectionView *)collectionView indexpath: (NSIndexPath *)indexpath;
+
+//viewModel
+@property (nonatomic, strong) ColumnViewModel *viewModel;
+
+
+@end

@@ -1,0 +1,396 @@
+//
+//  ColumnViewModel.m
+//  cbox
+//
+//  Created by 王江亮 on 16/6/30.
+//  Copyright © 2016年 tjianli. All rights reserved.
+//
+
+#import "ColumnViewModel.h"
+#import "ColumnChosenSecondModel.h"
+
+@interface ColumnViewModel ()
+@property (nonatomic,strong) NSMutableDictionary *dataDic;
+@property (nonatomic,strong) NSMutableArray *tagArr;
+
+////精选页书
+//@property (nonatomic, assign) NSInteger choosenPage;
+////频道页书
+//@property (nonatomic, assign) NSInteger channelPage;
+
+@end
+
+@implementation ColumnViewModel{
+//    //精选页书
+//    NSInteger choosenPage;
+//    //频道页书
+//    NSInteger channelPage;
+    
+    //广告url
+    NSString* advertisementLinkUrl;
+    //是否有广告
+    BOOL havaAd;
+}
+
+
++ (instancetype)viewModel{
+
+    ColumnViewModel *viewModel = [[ColumnViewModel alloc]init];
+//    viewModel.choosenPage = 1;
+//    viewModel.channelPage = 1;
+    return viewModel;
+}
+
+#pragma mark - 精选数据
+- (void)columnDataWithSuccess:(SuccessBlock)successBlock failBlock:(FailureBlock)failBlock{
+    
+    NSString *baseRequestTimestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]*1000];
+    [self.tagArr addObject:baseRequestTimestamp];
+    NSString *urlStr = URLBYTAG(LANMUINDEX_URL);
+//    NSString *lastUrl = [NSString stringWithFormat:@"%@&n=30&p=1&t=json", urlStr];
+
+    weakedSelf
+    [CNRequest requestGet:baseRequestTimestamp url:urlStr success:^(id responds) {
+        
+        weakSelf.dataDic = (NSMutableDictionary *)responds;
+        NSMutableDictionary *data = weakSelf.dataDic[@"data"];
+        NSMutableArray *itemList = [data objectForKey:@"itemList"];
+        //填装精选底部视图model
+        // weakSelf.choosenItemList = [ColumnChosenModel parserColumnItemListModel:data];
+//        [weakSelf.chosenSecondDic removeAllObjects];
+        weakSelf.choosenItemList = [CategoryItemMode parserItemListModel:itemList];
+        
+        //创建筛选接口
+        weakSelf.filterUrl = [data objectForKey:@"filterUrl"];
+        
+//        //拼接第二次请求的url
+//        NSString *zhuUrl = URLBYTAG(VLIST_URL);
+//        NSString *secondUrl = [NSString stringWithFormat:@"%@%@",zhuUrl,@"&p=1&n=1&g=1&vsid="];
+//        for (CategoryItemMode *model in weakSelf.choosenItemList) {
+//            secondUrl = [secondUrl stringByAppendingFormat:@"%@,", model.vsetId];
+//        }
+
+        
+        //请求广告之前，
+        havaAd = NO;
+        //请求广告数据
+        [weakSelf columnChosenADdataWithSuccess:^(id responds) {
+            
+            NSMutableArray *tempArr = [NSMutableArray arrayWithArray:weakSelf.choosenItemList];
+            [tempArr addObject:weakSelf.adData];
+            [weakSelf.choosenItemList removeAllObjects];
+            weakSelf.choosenItemList = [NSMutableArray arrayWithArray:tempArr];
+            
+            havaAd = YES;
+            
+            if (successBlock) {
+                successBlock(responds);
+            }
+            
+            
+//            //进行第二次请求
+//            [CNRequest requestGet:@"secondData" url:secondUrl success:^(id responds) {
+//                
+//                NSLog(@"%@",responds);
+//                NSMutableArray * arr = (NSMutableArray *)responds;
+//                
+//                NSMutableArray *secondRespondsArr = [ColumnChosenSecondModel parserColumnChosenSecondAllModel:arr];
+//                weakSelf.secondModelArray = [self orderData:weakSelf.choosenItemList secondData:secondRespondsArr];
+//                
+//                //第二次成功
+//                if (successBlock) {
+//                    successBlock(responds);
+//                }
+//                
+//            } failure:^(NSError *error) {
+//                
+//            }];
+
+            
+            
+        } failBlock:^(NSError *error) {
+            NSLog(@"guanggaoshibai");
+            
+            havaAd = NO;
+            
+            if (successBlock) {
+                successBlock(responds);
+            }
+            
+//            //进行第二次请求
+//            [CNRequest requestGet:@"secondData" url:secondUrl success:^(id responds) {
+//                
+//                NSLog(@"%@",responds);
+//                NSMutableArray * arr = (NSMutableArray *)responds;
+//                
+//                NSMutableArray *secondRespondsArr = [ColumnChosenSecondModel parserColumnChosenSecondAllModel:arr];
+//                weakSelf.secondModelArray = [self orderData:weakSelf.choosenItemList secondData:secondRespondsArr];
+//                
+//                //第二次成功
+//                if (successBlock) {
+//                    successBlock(responds);
+//                }
+            
+//            } failure:^(NSError *error) {
+//                
+//            }];
+//
+//            
+//            
+        }];
+        
+//        //拼接第二次请求的url
+//        NSString *zhuUrl = URLBYTAG(VLIST_URL);
+//        NSString *secondUrl = [NSString stringWithFormat:@"%@%@",zhuUrl,@"&p=1&n=1&g=1&vsid="];
+//        for (CategoryItemMode *model in weakSelf.choosenItemList) {
+//            secondUrl = [secondUrl stringByAppendingFormat:@"%@,", model.vsetId];
+//        }
+        
+//        //进行第二次请求
+//        [CNRequest requestGet:@"secondData" url:secondUrl success:^(id responds) {
+//            
+//            NSLog(@"%@",responds);
+//            NSMutableArray * arr = (NSMutableArray *)responds;
+//
+//            NSMutableArray *secondRespondsArr = [ColumnChosenSecondModel parserColumnChosenSecondAllModel:arr];
+//            weakSelf.secondModelArray = [self orderData:weakSelf.choosenItemList secondData:secondRespondsArr];
+//            
+//            //第二次成功
+//            if (successBlock) {
+//                successBlock(responds);
+//            }
+//            
+//        } failure:^(NSError *error) {
+//            
+//        }];
+
+        
+    } failure:^(NSError *error) {
+        if (failBlock) {
+            failBlock(error);
+        }
+    }];
+}
+
+- (NSMutableDictionary *)dataDic{
+
+    if (_dataDic == nil) {
+        _dataDic = [[NSMutableDictionary alloc] init];
+    }
+    return _dataDic;
+}
+
+#pragma mark - 筛选数据
+- (void)filterDataWithSuccess:(SuccessBlock)successBlock failBlock:(FailureBlock)failBlock{
+
+    NSString *tag = @"columnFilter";
+    [self.tagArr addObject:tag];
+    weakedSelf
+    [CNRequest requestGet:tag url:self.filterUrl success:^(id responds) {
+        //装原始数据
+        weakSelf.filterResponds = [FilterItem parseFilterItemList:responds];
+        //装model
+        weakSelf.filterData = [CategoryListModel columnChosenWithCategoryListModel:(NSMutableDictionary *)responds];
+        
+        if (successBlock) {
+            successBlock(nil);
+        }
+    } failure:^(NSError *error) {
+        if (failBlock) {
+            failBlock(nil);
+        }
+    }];
+}
+
+#pragma mark - 广告数据
+- (void)columnChosenADdataWithSuccess:(SuccessBlock)successBlock failBlock:(FailureBlock)failBlock{
+
+    ADListModel *adlist = [ADListModel sharedInstance];
+    advertisementLinkUrl = [self updateAdLinkUrlParameter:adlist.dianboerjiye_icon_heng];
+//    advertisementLinkUrl = [self updateAdLinkUrlParameter:adlist.toutiaoerjiyelunbotu];
+    [self.tagArr addObject:advertisementLinkUrl];
+    [CNRequest requestGet:advertisementLinkUrl url:advertisementLinkUrl success:^(id responds) {
+        
+        //广告数据
+        self.adData = [AdvertisementModel parseAdvertisementModel:responds];
+        if (successBlock) {
+            successBlock (self.adData);
+        }
+    } failure:^(NSError *error) {
+        if (failBlock) {
+            failBlock (nil);
+        }
+    }];
+}
+- (void)cancelAllRequest{
+    for (NSString * tag in self.tagArr) {
+        [CNRequest cancelRequestByTag:&tag];
+    }
+}
+#pragma mark - 频道数据
+- (void)columnChannelWithSuccess:(SuccessBlock)successBlock failBlock:(FailureBlock)failBlock categoryModelStr: (NSString *)categoryStr channelPage:(NSInteger)channelPage{
+
+    NSString *baseRequestTimestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]*1000];
+    NSString *urlStr = URLBYTAG(LANMUSX_URL);
+    NSString *lastUrl = [NSString stringWithFormat:@"%@&cid=%@&n=30&p=%ld&t=json", urlStr,categoryStr, channelPage];
+    [self.tagArr addObject:baseRequestTimestamp];
+    weakedSelf
+    [CNRequest requestGet:baseRequestTimestamp url:lastUrl success:^(id responds) {
+        
+        NSMutableDictionary *dic = (NSMutableDictionary *)responds[@"response"];
+        NSMutableArray *docs = dic[@"docs"];
+        
+        if (channelPage == 1) {
+            [weakSelf.channelData removeAllObjects];
+        }
+//        weakSelf.channelData = [ColumnChannelModel parserColumnChannelModel:docs];
+        for (ColumnChannelModel *model in [ColumnChannelModel parserColumnChannelModel:docs]) {
+            [weakSelf.channelData addObject:model];
+        }
+        if (successBlock) {
+            successBlock(weakSelf.channelData);
+        }
+    } failure:^(NSError *error) {
+        if (failBlock) {
+            failBlock(error);
+        }
+    }];
+}
+
+- (NSMutableArray *)channelData{
+
+    if (_channelData == nil) {
+        _channelData = [[NSMutableArray alloc] init];
+    }
+    return _channelData;
+}
+
+- (NSMutableArray *)choosenADArray{
+
+    if (_channelData == nil) {
+        _channelData = [[NSMutableArray alloc] init];
+    }
+    return _channelData;
+}
+
+
+-(NSString*) updateAdLinkUrlParameter:(NSString*) adLinkUrl
+{
+    if   (adLinkUrl== nil || [adLinkUrl  isEqualToString:@""])
+    {
+        return @"";
+    }
+    NSString *resultString;
+    NSString * timeStamp1 =[NSString stringWithFormat:@"%lld",(long long)[[NSDate  date] timeIntervalSince1970]] ;
+    resultString = [adLinkUrl stringByReplacingOccurrencesOfString:@"{random}" withString:timeStamp1];
+    resultString = [resultString stringByReplacingOccurrencesOfString:@"{width}" withString:[NSString stringWithFormat:@"%d",160]];  //144广告宽度
+    resultString = [resultString stringByReplacingOccurrencesOfString:@"{height}" withString:[NSString stringWithFormat:@"%d",120]];   //180广告高度
+    NSString *p1 =@"";
+    NSString *p2=@"";
+    resultString = [resultString stringByReplacingOccurrencesOfString:@"{p1}" withString:p1];
+    resultString = [resultString stringByReplacingOccurrencesOfString:@"{p2}" withString:p2];
+    return resultString;
+}
+
+- (NSMutableDictionary *)chosenSecondDic{
+
+
+    if (_chosenSecondDic == nil) {
+        _chosenSecondDic = [[NSMutableDictionary alloc] init];
+    }
+    return _chosenSecondDic;
+}
+
+
+
+//对数据进行排序
+- (NSMutableArray *)orderData: (NSMutableArray *)arr secondData: (NSMutableArray *)secondArr{
+
+    NSMutableArray *orderArr = [[NSMutableArray alloc] init];
+
+//    for (CategoryItemMode *firstModel in arr) {
+    
+    //排序数组个数
+    NSInteger indexFirstArr;
+    //如果有广告
+    if (havaAd == YES) {
+        indexFirstArr = arr.count - 1;
+    }else{
+        indexFirstArr = arr.count;
+    }
+    
+    for (NSInteger i = 0; i < indexFirstArr; i++) {
+
+        CategoryItemMode *firstModel = arr[i];
+
+    
+         NSString *firstStr = firstModel.vsetId;
+        
+        for (ColumnChosenSecondModel *secondModel in secondArr) {
+
+            NSString *secondStr = secondModel.vsid;
+            
+            if ([secondStr isEqualToString:firstStr]) {
+                [orderArr addObject:secondModel];
+                break;
+            }
+        }
+    }
+    
+    return orderArr;
+}
+
+//请求第二次数据
+- (void)secondChosenDataWithSuccess:(SuccessBlock)successBlock failBlock:(FailureBlock)failBlock{
+
+    //拼接第二次请求的url
+    NSString *zhuUrl = URLBYTAG(VLIST_URL);
+//    NSString *secondUrl = [NSString stringWithFormat:@"%@%@",zhuUrl,@"&p=1&n=1&g=1&vsid="];
+    NSString *secondUrl = [NSString stringWithFormat:@"%@%@",zhuUrl,@"&p=1&n=1&g=1&vsid=,"];
+    
+    //排序数组个数
+    NSInteger indexSecondArr;
+    //如果有广告
+    if (havaAd == YES) {
+        indexSecondArr = self.choosenItemList.count - 1;
+    }else{
+        indexSecondArr = self.choosenItemList.count;
+    }
+//    for (CategoryItemMode *model in self.choosenItemList) {
+    for (NSInteger i = 0; i < indexSecondArr-1; i++) {
+        
+        CategoryItemMode *model = self.choosenItemList[i];
+        secondUrl = [secondUrl stringByAppendingFormat:@"%@,", model.vsetId];
+    }
+    
+    CategoryItemMode *model = self.choosenItemList[indexSecondArr-1];
+    secondUrl = [secondUrl stringByAppendingFormat:@"%@", model.vsetId];
+    
+    weakedSelf
+    //进行第二次请求
+    [CNRequest requestGet:@"secondData" url:secondUrl success:^(id responds) {
+        if ([responds isKindOfClass:[NSArray class]]) {
+            NSMutableArray * arr = (NSMutableArray *)responds;
+            
+            NSMutableArray *secondRespondsArr = [ColumnChosenSecondModel parserColumnChosenSecondAllModel:arr];
+            weakSelf.secondModelArray = [self orderData:weakSelf.choosenItemList secondData:secondRespondsArr];
+            
+            //第二次成功
+            if (successBlock) {
+                successBlock(responds);
+            }
+
+        } else {
+            if (failBlock) {
+                failBlock(nil);
+            }
+        }
+            } failure:^(NSError *error) {
+                if (failBlock) {
+                    failBlock(nil);
+                }
+    }];
+}
+
+
+@end

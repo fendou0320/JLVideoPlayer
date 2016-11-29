@@ -1,0 +1,32 @@
+//
+//  LanMuThreeFilterViewModel.h
+//  cbox
+//
+//  Created by 王江亮 on 16/7/15.
+//  Copyright © 2016年 tjianli. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "FilterListItem.h"
+#import "ColumnBaseButton.h"
+#import "ColumnChannelModel.h"
+
+@interface LanMuThreeFilterViewModel : NSObject
+
++ (instancetype)lanMuThreeFilterViewModel;
+
+@property (nonatomic, assign) BOOL isLanmu;
+
+@property (nonatomic, strong) AdvertisementModel *adData;
+
+//频道数据
+@property (nonatomic, strong) NSMutableArray *channelData;
+
+- (void)lanMuThreeFilterViewModelFirst: (ColumnBaseButton *)firstBtn secondBtn: (ColumnBaseButton *)secondBtn thirdBtn: (ColumnBaseButton *)thirdBtn Success:(SuccessBlock)successBlock failBlock:(FailureBlock)failBlock filterPage:(NSInteger)filterPage;
+
+//广告
+- (void)lanMuThreeADModelWithSuccess: (SuccessBlock)successBlock failBlock: (FailureBlock)failBlock;
+
+@property (nonatomic, copy)NSString *cidStr;
+
+@end

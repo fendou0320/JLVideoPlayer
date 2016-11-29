@@ -1,0 +1,24 @@
+//
+//  ChosenHeaderCell.h
+//  cbox
+//
+//  Created by 王江亮 on 16/7/11.
+//  Copyright © 2016年 tjianli. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "MyColumnView.h"
+
+//顶部导航长条高度.
+#define KColumnNavagationHeight 52.5
+//我的栏目高度
+#define kColumnMyColumnHeight (38+34+40)/2
+
+
+@interface ChosenHeaderCell : UICollectionReusableView
+
+@property (nonatomic, strong) MyColumnView *myColumn;
+
+- (void)creatSubiew;
+
+@end

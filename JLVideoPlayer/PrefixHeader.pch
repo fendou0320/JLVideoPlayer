@@ -1,0 +1,30 @@
+//
+//  PrefixHeader.pch
+//  JLVideoPlayer
+//
+//  Created by 王江亮 on 16/10/18.
+//  Copyright © 2016年 WangJiangliang. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import <Foundation/Foundation.h>
+
+#import "ColorDef.h"
+#import "TypeDef.h"
+#import "SizeDef.h"
+#import "KeyConstant.h"
+#import "AppConstant.h"
+
+#import "UIImageView+WebCache.h"
+#import "Utils.h"
+#import "Reachability.h"
+
+#import "Masonry.h"
+
+
+#endif /* PrefixHeader_pch */

@@ -1,0 +1,588 @@
+//
+//  ChosenCollectionViewCell.m
+//  cbox
+//
+//  Created by 王江亮 on 16/6/30.
+//  Copyright © 2016年 tjianli. All rights reserved.
+//
+
+#import "ChosenCollectionViewCell.h"
+
+static NSString *identity = @"ChosenCollectionViewCell";
+
+@interface ChosenCollectionViewCell (){
+    
+    //是否收藏
+    BOOL isChosen;
+}
+@property (nonatomic, weak) UIImageView *bigImageView;//左边大图
+@property (nonatomic, weak) UILabel *upTitleLabel;//上部标题
+//@property (nonatomic, weak) UILabel *downTitleLabel;//下部标题
+//@property (nonatomic, weak) UILabel *markLabel;//收藏
+//@property (nonatomic, weak) UIImageView *starImageView;//星星大图
+@property (nonatomic, weak) UIButton *markLabel;//收藏
+@property (nonatomic, weak) UIButton *starImageView;
+@end
+
+@implementation ChosenCollectionViewCell
+
++ (instancetype)chosenCollectionViewCell: (UICollectionView *)collectionView indexpath: (NSIndexPath *)indexpath{
+    
+    ChosenCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identity forIndexPath:indexpath];
+    return cell;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame{
+    
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.backgroundColor = HEX2RGB(@"#f2f2f2");
+//        CGFloat hue = ( arc4random() % 256 / 256.0 ); //0.0 to 1.0
+//        CGFloat saturation = ( arc4random() % 128 / 256.0 ) + 0.5; // 0.5 to 1.0,away from white
+//        CGFloat brightness = ( arc4random() % 128 / 256.0 ) + 0.5; //0.5 to 1.0,away from black
+//        self.backgroundColor = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
+        [self creatSubview];
+    }
+    return self;
+}
+
+- (void)creatSubview{
+    
+//    for (UIView *view in self.contentView.subviews) {
+//        [view removeFromSuperview];
+//    }
+    
+    //图片bigImageView
+    UIImageView *bigImageView = [[UIImageView alloc]init];
+    bigImageView.contentMode = UIViewContentModeScaleToFill;
+    bigImageView.image = [UIImage imageNamed:@"320x240.jpg"];
+    self.bigImageView = bigImageView;
+    [self.contentView addSubview:bigImageView];
+    [bigImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self);
+        make.left.equalTo(self);
+        make.width.mas_equalTo(320/2);
+        make.height.mas_equalTo(240/2);
+    }];
+    
+    //标题titleLabel
+    UILabel *upTitleLabel = [[UILabel alloc]init];
+    upTitleLabel.font = [UIFont systemFontOfSize:16.0];
+    upTitleLabel.textColor = HEX2RGB(@"#000000");
+    //    NSString *str = @"皑如山上雪皎若云间月闻君有";
+    //    upTitleLabel.text = str;
+    //    upTitleLabel.backgroundColor = [UIColor redColor];
+    upTitleLabel.numberOfLines = 4;
+    //    //调整行间距
+    //    NSMutableAttributedString * attributedString = [[NSMutableAttributedString alloc] initWithString:str];
+    //    NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    //    [paragraphStyle setLineSpacing:1.01f]; //调整行间距
+    //    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [str length])];
+    //    upTitleLabel.attributedText = attributedString;
+    ////    [upTitleLabel sizeToFit];
+    //传递
+    self.upTitleLabel = upTitleLabel;
+    [self.contentView addSubview:upTitleLabel];
+    [upTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).mas_offset(5);
+        make.left.equalTo(bigImageView.mas_right).mas_offset(8);
+        make.right.equalTo(self);
+//        make.height.mas_equalTo(73);//行间距调整
+    }];
+    
+    //下标题
+//    UILabel *downTitleLabel = [[UILabel alloc]init];
+//    downTitleLabel.font = [UIFont systemFontOfSize:13.0];
+//    downTitleLabel.textColor = HEX2RGB(@"#000000");
+//    //    downTitleLabel.text = @"皑如山上雪，皎若云间月闻君有两意，故来相决绝今日斗酒会，明旦沟水头躞蹀御沟上，沟水东西流";
+//    //    downTitleLabel.backgroundColor = [UIColor greenColor];
+//    downTitleLabel.numberOfLines =0;
+//    downTitleLabel.hidden = YES;
+//    self.downTitleLabel = downTitleLabel;
+//    [self.contentView addSubview:downTitleLabel];
+    
+    //标签
+    //    UILabel *markLabel = [[UILabel alloc]init];
+    //    markLabel.font = [UIFont systemFontOfSize:16.0];
+    //    markLabel.textColor = HEX2RGB(@"#009be5");
+    //    markLabel.text = @"已收藏";
+    //    markLabel.numberOfLines =1;
+    UIButton *markLabel = [UIButton buttonWithType:UIButtonTypeCustom];
+//    markLabel.backgroundColor = [UIColor greenColor];
+    markLabel.titleLabel.font = [UIFont systemFontOfSize:16.0];
+//    markLabel.titleLabel.textAlignment = NSTextAlignmentLeft;
+    markLabel.tag = 11;
+    //收藏与未收藏
+    [markLabel setTitle:@"收藏" forState:UIControlStateNormal];
+    [markLabel setTitleColor:HEX2RGB(@"#7f7f7f") forState:UIControlStateNormal];
+    [markLabel setTitle:@"已收藏" forState:UIControlStateSelected];
+    [markLabel setTitleColor:HEX2RGB(@"#009be5") forState:UIControlStateSelected];
+    
+    [markLabel addTarget:self action:@selector(chosenClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.markLabel = markLabel;
+    
+    [self.markLabel.titleLabel setTextAlignment:NSTextAlignmentRight];
+    
+    [self.contentView addSubview:markLabel];
+    [markLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.bottom.equalTo(self).mas_offset(-3);//改
+        make.right.equalTo(self).mas_offset(-11);//改
+//        make.width.mas_equalTo(50);
+        make.height.mas_equalTo(24);
+    }];
+    
+    //图片bigImageView
+    //    UIImageView *starImageView = [[UIImageView alloc]init];
+    //    starImageView.contentMode = UIViewContentModeScaleToFill;
+    //    starImageView.image = [UIImage imageNamed:@"03.栏目[02]_02_selected"];
+    UIButton *starImageView = [UIButton buttonWithType:UIButtonTypeCustom];
+//    starImageView.backgroundColor = MJRandomColor;
+    [starImageView setContentMode:UIViewContentModeScaleToFill];
+    starImageView.tag = 12;
+//    starImageView.backgroundColor = [UIColor redColor];
+    //收藏照片和非收藏照片的设置
+    [starImageView setImage:[UIImage imageNamed:@"03.栏目[02]_02"] forState:UIControlStateNormal];
+    [starImageView setImage:[UIImage imageNamed:@"03.栏目[02]_02_selected"] forState:UIControlStateSelected];
+    [starImageView addTarget:self action:@selector(chosenClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.starImageView = starImageView;
+    [self.contentView addSubview:starImageView];
+    [starImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(self).mas_offset(-6);
+//        make.centerY.equalTo(self.markLabel);
+        make.bottom.equalTo(self).mas_offset(-5);
+        make.right.equalTo(markLabel.mas_left).mas_offset(-4);
+        make.width.mas_equalTo(24);
+        make.height.mas_equalTo(24);
+    }];
+    
+//    //底部文字
+//    [downTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(upTitleLabel.mas_bottom).mas_offset(8);
+//        make.left.equalTo(bigImageView.mas_right).mas_offset(8);
+//        make.right.equalTo(self);
+//        make.bottom.equalTo(self.starImageView.mas_top).mas_offset(-13+5+3);
+//    }];
+}
+
+- (void)setModel:(CategoryItemMode *)model{
+    
+    _model = model;
+    
+    if ([_model.cmsImgType isEqualToString:@"0"]) {
+        //都用第二次请求的照片
+        [self creatSecondData: self.secondModel];
+        
+    }else{
+        //第一次和第二次并用
+        [self cmsImgTypeZerocreatSecondData: self.secondModel];
+    }
+}
+    
+//    //判断是否进行第二次请求
+//    weakedSelf
+//    if ([_model.cmsImgType isEqualToString:@"0"]) {
+//        //请求数据
+//        NSString *zhuUrl = URLBYTAG(VLIST_URL);
+//        NSString *url = [NSString stringWithFormat:@"%@&vsid=%@", zhuUrl,_model.vsetId];
+//        [CNRequest requestGet:@"lanmujingxuan" url:url success:^(id responds) {
+//            NSMutableDictionary * dic = (NSMutableDictionary *)responds;
+//            NSMutableArray *secondModelArray = [ColumnChosenSecondModel parserColumnChosenSecondModel:dic];
+//            
+//            [weakSelf creatSecondData:secondModelArray];
+//            
+//        } failure:^(NSError *error) {
+//            NSLog(@"chucuol");
+//            [weakSelf creatDataToView];
+//        }];
+//        
+//    }else{
+//        //直接赋值
+//        [self creatDataToView];
+//    }
+    
+    //取消上一次进行的请求
+    
+//    //判断是否存在
+//    BOOL isHave = NO;
+//    for (NSString *key in [self.viewModel.chosenSecondDic allKeys]) {
+//        if ([key isEqualToString:url]) {
+//            isHave = YES;
+//        }
+//    }
+//
+//    if (isHave == NO) {
+//
+//        NSLog(@"cunzaile");
+//
+//    }else{
+//
+//        ColumnChosenSecondModel *secondModel = [self.viewModel.chosenSecondDic objectForKey:url];
+//
+//        if ([_model.cmsImgType isEqualToString:@"0"]) {
+//            //都用第二次请求的照片
+//            [weakSelf creatSecondData: secondModel];
+//        }else{
+//            //第一次和第二次并用
+//            [weakSelf cmsImgTypeZerocreatSecondData: secondModel];
+//        }
+//
+//        return;
+//    }
+    
+    
+//    weakedSelf
+//    //请求数据
+//    NSString *zhuUrl = URLBYTAG(VLIST_URL);
+//    NSString *url = [NSString stringWithFormat:@"%@&vsid=%@", zhuUrl,_model.vsetId];
+//    [CNRequest requestGet:@"lanmujingxuan" url:url success:^(id responds) {
+//        
+//        
+//        NSMutableDictionary * dic = (NSMutableDictionary *)responds;
+//        NSMutableArray *secondModelArray = [ColumnChosenSecondModel parserColumnChosenSecondModel:dic];
+//        
+//        //做缓存处理
+//        ColumnChosenSecondModel *secondModel = secondModelArray[0];
+//        if ([[self.viewModel.chosenSecondDic allKeys] containsObject: url]) {
+//            [self.viewModel.chosenSecondDic removeObjectForKey:url];
+//            [self.viewModel.chosenSecondDic setValue:secondModel forKey:url];
+//        }else{
+//            [self.viewModel.chosenSecondDic setValue:secondModel forKey:url];
+//        }
+//        
+//        NSLog(@"%@", self.viewModel.chosenSecondDic);
+//        
+//        if ([_model.cmsImgType isEqualToString:@"0"]) {
+//            //都用第二次请求的照片
+//            [weakSelf creatSecondData: secondModel];
+//        }else{
+//            //第一次和第二次并用
+//            [weakSelf cmsImgTypeZerocreatSecondData: secondModel];
+//        }
+//
+//    } failure:^(NSError *error) {
+//                
+//        ColumnChosenSecondModel *secondModel = [self.viewModel.chosenSecondDic objectForKey:url];
+//        
+//        if ([_model.cmsImgType isEqualToString:@"0"]) {
+//            //都用第二次请求的照片
+//            [weakSelf creatSecondData: secondModel];
+//        }else{
+//            //第一次和第二次并用
+//            [weakSelf cmsImgTypeZerocreatSecondData: secondModel];
+//        }
+//
+//        
+////        [weakSelf creatDataToView];
+//    }];
+//
+//    
+//}
+
+//- (void)creatDataToView{
+//
+//    //赋值
+//    if (self.model.imgUrl == nil) {
+//        
+//        self.bigImageView.image = [UIImage imageNamed:@"456x342--综艺首页轮播图左侧小图.png"];
+//    }else{
+//        [self.bigImageView setImageWithURL:[NSURL URLWithString:self.model.imgUrl]];
+//    }
+//    
+//    if (self.model.title == nil) {
+//        self.upTitleLabel.hidden = YES;
+//    }else{
+//        self.upTitleLabel.hidden = NO;
+//        self.upTitleLabel.text = self.model.title;
+//    }
+//    
+////    if (self.model.brief == nil) {
+////        self.downTitleLabel.hidden = YES;
+////    }else{
+////        self.downTitleLabel.hidden = NO;
+////        self.downTitleLabel.text = self.model.brief;
+////    }
+//    
+//    
+//    
+//    if (isChosen == NO) {
+//        self.starImageView.selected = NO;
+//        self.markLabel.selected = NO;
+//    }else{
+//        self.starImageView.selected = YES;
+//        self.markLabel.selected = YES;
+//    }
+//}
+
+
+//二次请求赋值
+- (void)creatSecondData: (ColumnChosenSecondModel *)secondModel{
+
+//    //赋值
+//    if (secondModel.img == nil) {
+//        
+//    }else{
+//        [self.bigImageView setImageWithURL:[NSURL URLWithString: secondModel.img]];
+//    }
+    
+    [self.bigImageView setImageWithURL:[NSURL URLWithString: secondModel.img] placeholderImage:[UIImage imageNamed:@"320x240.jpg"]];
+
+    
+    if (secondModel.t == nil) {
+        self.upTitleLabel.hidden = YES;
+    }else{
+        self.upTitleLabel.hidden = NO;
+        self.upTitleLabel.text = secondModel.t;
+    }
+    
+//    if (self.model.brief == nil) {
+//        self.downTitleLabel.hidden = YES;
+//    }else{
+//        self.downTitleLabel.hidden = NO;
+//        self.downTitleLabel.text = self.model.brief;
+//    }
+    //判断－－－是否已经收藏
+    NSString *channld = secondModel.vsid;
+//    NSMutableArray *arr = [FavModel getFavs];
+    BOOL isFav = [FavModel isFaved:channld];
+
+    if (isFav == NO) {
+        self.starImageView.selected = NO;
+        self.markLabel.selected = NO;
+    }else{
+        self.starImageView.selected = YES;
+        self.markLabel.selected = YES;
+    }
+}
+
+- (void)cmsImgTypeZerocreatSecondData: (ColumnChosenSecondModel *)secondModel{
+    
+//    //赋值
+//    if (secondModel.img == nil) {
+//        
+//    }else{
+//        [self.bigImageView setImageWithURL:[NSURL URLWithString: self.model.imgUrl]];
+//    }
+    
+      [self.bigImageView setImageWithURL:[NSURL URLWithString: self.model.imgUrl] placeholderImage:[UIImage imageNamed:@"320x240.jpg"]];
+    
+    if (secondModel.t == nil) {
+        self.upTitleLabel.hidden = YES;
+    }else{
+        self.upTitleLabel.hidden = NO;
+        self.upTitleLabel.text = secondModel.t;
+    }
+    
+    //    if (self.model.brief == nil) {
+    //        self.downTitleLabel.hidden = YES;
+    //    }else{
+    //        self.downTitleLabel.hidden = NO;
+    //        self.downTitleLabel.text = self.model.brief;
+    //    }
+    //判断－－－是否已经收藏
+    NSString *channld = secondModel.vsid;
+    BOOL isFav = [FavModel isFaved:channld];
+    
+    if (isFav == NO) {
+        self.starImageView.selected = NO;
+        self.markLabel.selected = NO;
+    }else{
+        self.starImageView.selected = YES;
+        self.markLabel.selected = YES;
+    }
+}
+
+
+
+- (void)chosenClick: (UIButton *)sender{
+    
+//    if (sender.tag == 11) {
+//        sender.selected = !sender.selected;
+//        self.starImageView.selected = !self.starImageView.selected;
+//        isChosen = !isChosen;
+//    }else if (sender.tag == 12){
+//    
+//    }
+    
+    self.markLabel.selected = !self.markLabel.selected;
+    self.starImageView.selected = !self.starImageView.selected;
+    isChosen = !isChosen;
+    
+    //判断是否登录
+    if([UserAccount isLogined]){
+        [self loadingWithData];
+    }else{
+        [self unloadingWithData];
+    }
+    
+}
+
+//登录状态下
+- (void)loadingWithData{
+
+    CategoryItemMode *model = self.model;
+    PlayModel *playModel = [[PlayModel alloc]init];
+    playModel.playType = PlayType_Dianbo;
+    
+    NSString *vid = model.vsetId;
+    BOOL faved = [FavModel isFaved:vid];
+    
+    if(faved){
+        FavModel *model = [FavModel readFavModelById:vid];
+        [FavModel deleteFavById:vid];
+        [FavModel yun_del_fav:model];
+        [[NSNotificationCenter defaultCenter]postNotificationName:kFavChanged object:[NSString stringWithFormat:@"%ld_%ld_%@",(long)(playModel.playType==PlayType_Dianbo?FavType_Dianbo:FavType_Zhibo),(long)FavOp_DEL,vid]];
+    }else{
+
+        FavModel *favModel = [[FavModel alloc]init];
+        favModel.favType = FavType_Dianbo;
+        
+        favModel.title = model.title;
+        favModel.channelId = model.vsetId;
+        favModel.vtype = @"2";
+//        favModel.field = @"1";
+        favModel.vsetPageid = model.vsetPageid;
+        favModel.dianboCatCid = CID_DIANSHILANMU;
+        favModel.field = @"1";
+        [FavModel addFavs:favModel];
+        [FavModel yun_add_fav:favModel];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kFavChanged object:[NSString stringWithFormat:@"%ld_%ld_%@",(long)FavType_Dianbo,(long)FavOp_ADD,model.channelId]];
+    }
+}
+
+//非登录状态下
+- (void)unloadingWithData{
+
+    CategoryItemMode *model = self.model;
+    PlayModel *playModel = [[PlayModel alloc]init];
+    playModel.playType = PlayType_Dianbo;
+    
+    NSString *vid = model.vsetId;
+    BOOL faved = [FavModel isFaved:vid];
+    
+    if(faved){
+        //已经收藏
+        [FavModel deleteFavById:vid];
+        [[NSNotificationCenter defaultCenter]postNotificationName:kFavChanged object:[NSString stringWithFormat:@"%ld_%ld_%@",(long)(playModel.playType==PlayType_Dianbo?FavType_Dianbo:FavType_Zhibo),(long)FavOp_DEL,vid]];
+    }else{
+        //为收藏
+        FavModel *favModel = [[FavModel alloc]init];
+        favModel.favType = FavType_Dianbo;
+        
+        favModel.title = model.title;
+        favModel.channelId = model.vsetId;
+        favModel.vtype = @"2";
+        favModel.vsetPageid = model.vsetPageid;
+        favModel.dianboCatCid = CID_DIANSHILANMU;
+        favModel.field = @"1";
+        [FavModel addFavs:favModel];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kFavChanged object:[NSString stringWithFormat:@"%ld_%ld_%@",(long)FavType_Dianbo,(long)FavOp_ADD,model.channelId]];
+    }
+}
+
+//-(void)doFav;{
+//    
+////    if(playModel.playType==PlayType_Dianbo&&([playModel.dianboPlayModel.vType intValue]==DianboTJType_Xiyou)){
+////        
+////        [PopToastView showWithText:@"该视频不支持收藏"];
+////        return;
+////    }
+//    
+//    NSString *vid = @"";
+//    if(playModel.playType==PlayType_Dianbo){
+//        vid = playModel.dianboPlayModel.vsid;
+//     }else if(playModel.playType==PlayType_Video){
+//        vid = playModel.videoPlayModel.vid;
+//    }else if(playModel.playType==PlayType_Local){
+//        vid = playModel.localPlayModel.vid;
+//    }
+//    else{
+//        vid = playModel.zhiboPlayModel.channelId;
+//    }
+//    
+//    BOOL faved = [FavModel isFaved:vid];
+//    if(faved){
+//        FavModel *model = [FavModel readFavModelById:vid];
+//        [FavModel deleteFavById:vid];
+//        [FavModel yun_del_fav:model];
+//        [[NSNotificationCenter defaultCenter]postNotificationName:kFavChanged object:[NSString stringWithFormat:@"%d_%d_%@",playModel.playType==PlayType_Dianbo?FavType_Dianbo:FavType_Zhibo,FavOp_DEL,vid]];
+//        [PopToastView showWithText:@"取消收藏"];
+//        leftFavBtn.selected = NO;
+//    }else{
+//        
+//        leftFavBtn.selected = YES;
+//        FavModel *model = [[FavModel alloc]init];
+//        
+//        if(playModel.playType==PlayType_Dianbo){
+//            model.favType = FavType_Dianbo;
+//            model.channelId = playModel.dianboPlayModel.vsid;
+//            model.title = playModel.dianboPlayModel.descModel.name;
+//            model.dianboShowModel = playModel.dianboPlayModel.showListModel;
+//            model.dianboTJUrl = @"";
+//            model.playUrl = @"";
+//            model.dianboCatCid = playModel.dianboPlayModel.cid;
+//            model.vSetType = playModel.dianboPlayModel.setType;
+//            model.thumbUrl = playModel.dianboPlayModel.descModel.img;
+//            model.columnSo = playModel.dianboPlayModel.columnSo;
+//            model.vsetPageid = playModel.dianboPlayModel.vsetPageid;
+//            model.dianboCategory = playModel.dianboPlayModel.dianboCategory;
+//            model.vtype = playModel.dianboPlayModel.vType;//收藏需要存vtype20151126
+//            model.shareUrl = playModel.dianboPlayModel.listUrl;
+//            [FavModel addFavs:model];
+//            [FavModel yun_add_fav:model];
+//            
+//            [[NSNotificationCenter defaultCenter] postNotificationName:kFavChanged object:[NSString stringWithFormat:@"%d_%d_%@",FavType_Dianbo,FavOp_ADD,model.channelId]];
+//        }else if(playModel.playType==PlayType_Video){
+//            model.favType = FavType_Video;
+//            model.channelId = playModel.videoPlayModel.vid;
+//            model.title = playModel.videoPlayModel.title;
+//            model.thumbUrl = playModel.videoPlayModel.imgUrl;
+//            model.vtype = playModel.dianboPlayModel.vType;//收藏需要存vtype20151126
+//            model.shareUrl = @"";
+//            [FavModel addFavs:model];
+//            [FavModel yun_add_fav:model];
+//            
+//            [[NSNotificationCenter defaultCenter] postNotificationName:kFavChanged object:[NSString stringWithFormat:@"%d_%d_%@",FavType_Video,FavOp_ADD,model.channelId]];
+//        }else if(playModel.playType==PlayType_Local){
+//            
+//            DownModel *dm = [[DownloadWrap getInstance]getDownloadedModelByVid:vid];
+//            model.favType = FavType_Video;
+//            model.channelId = playModel.localPlayModel.vid;
+//            model.title = playModel.localPlayModel.title;
+//            model.thumbUrl = dm.downImageString;
+//            model.vtype = playModel.dianboPlayModel.vType;//收藏需要存vtype20151126
+//            model.shareUrl = @"";
+//            [FavModel addFavs:model];
+//            
+//            [[NSNotificationCenter defaultCenter] postNotificationName:kFavChanged object:[NSString stringWithFormat:@"%d_%d_%@",FavType_Video,FavOp_ADD,model.channelId]];
+//        }
+//        else{
+//            
+//            FavModel *model = [[FavModel alloc]init];
+//            model.channelId = playModel.zhiboPlayModel.channelId;
+//            model.favType = FavType_Zhibo;
+//            model.p2pUrl = playModel.zhiboPlayModel.p2pUrl;
+//            model.playUrl = @"";
+//            model.pindaoUrl = @"";
+//            model.title = playModel.zhiboPlayModel.title;
+//            model.shareUrl = playModel.zhiboPlayModel.shareUrl;
+//            model.zhiboIconImgUrl = playModel.zhiboPlayModel.iconUrl;
+//            [FavModel addFavs:model];
+//            [FavModel yun_add_fav:model];
+//            
+//            [[NSNotificationCenter defaultCenter] postNotificationName:kFavChanged object:[NSString stringWithFormat:@"%d_%d_%@",FavType_Zhibo,FavOp_ADD,model.channelId]];
+//        }
+//        
+//        //        [FavModel addFavs:model];
+//        [PopToastView showWithText:@"收藏成功"];
+//        NSString* label = [NSString stringWithFormat:@"直播_%@", model.title];
+//        //直播收藏 统计
+//        [MobileAppTracker trackEvent:model.title label:label category:@"收藏" value:0 extendProperty1:model.channelId extendProperty2:@"收藏"];
+//    }
+//    
+//}
+
+
+@end

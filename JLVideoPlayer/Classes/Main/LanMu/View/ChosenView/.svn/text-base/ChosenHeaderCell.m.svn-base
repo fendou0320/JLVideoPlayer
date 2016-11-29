@@ -1,0 +1,58 @@
+//
+//  ChosenHeaderCell.m
+//  cbox
+//
+//  Created by 王江亮 on 16/7/11.
+//  Copyright © 2016年 tjianli. All rights reserved.
+//
+
+#import "ChosenHeaderCell.h"
+
+@implementation ChosenHeaderCell
+
+- (id)initWithFrame:(CGRect)frame{
+
+    if ([super initWithFrame:frame]) {
+        
+//        [self creatSubiew];
+        
+        
+
+    }
+    return self;
+}
+
+
+
+- (void)creatSubiew{
+    
+    //移除
+    for (UIView *view in self.subviews) {
+        [view removeFromSuperview];
+    }
+
+    self.myColumn = [MyColumnView myColumnViewWithFrame:CGRectMake(0, 0, self.frame.size.width, kColumnMyColumnHeight) delegate:nil];
+    [self addSubview:self.myColumn];
+    
+    [self.myColumn chosenData];
+
+}
+
+
+//- (void)data{
+//
+//    //判断是否登录
+//    if([UserAccount isLogined]){
+//        //登录了－－－网络收藏数据处理－－－本地保存
+////        self.myColumn.noDataContentView.hidden = YES;
+////        self.myColumn.haveDataContentView.hidden = NO;
+//        [self.myColumn chosenData];
+//        
+//    }else{
+//        //没有登录－－－直接本地数据显示
+//        [self.myColumn chosenData];
+//    }
+//
+//}
+
+@end

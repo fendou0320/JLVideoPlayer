@@ -1,0 +1,50 @@
+//
+//  ChosenCollectionView.h
+//  cbox
+//
+//  Created by 王江亮 on 16/6/30.
+//  Copyright © 2016年 tjianli. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "ChosenCollectionViewCell.h"
+#import "ColumnAdCollectionViewCell.h"
+#import "ColumnChosenModel.h"
+#import "ChosenHeaderCell.h"
+#import "ColumnViewModel.h"
+
+@class ChosenCollectionView;
+
+@protocol ChosenCollectionViewDelegate <NSObject>
+@optional
+/**
+ *  向外部传递点击的是第几个值
+ *
+ *  @param selfView 自身
+ *  @param didItem  点击的第几个（数字）
+ */
+- (void)chosenCollectionView: (ChosenCollectionView *)selfView didSelectItem: (NSInteger)didItem;
+@end
+
+@interface ChosenCollectionView : UICollectionView<UICollectionViewDelegateFlowLayout,UICollectionViewDataSource>
+/**
+ *  数据
+ */
+@property (nonatomic, strong) NSMutableArray *dataArr;
+@property (nonatomic, weak) id<ChosenCollectionViewDelegate> chooseDelegate;
+/**
+ *  栏目精选视图
+ *
+ *  @param frame    frame
+ *  @param delegate 代理
+ *
+ *  @return
+ */
++ (instancetype)chosenCollectionViewWithFrame: (CGRect)frame delegate: (id<ChosenCollectionViewDelegate>) delegate;
+
+/**
+ *  viewModel
+ */
+@property (nonatomic, strong) ColumnViewModel *viewModel;
+
+@end
