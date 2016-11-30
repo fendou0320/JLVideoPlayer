@@ -21,10 +21,10 @@
 #import "AppConstant.h"
 
 #import "UIImageView+WebCache.h"
-#import "Utils.h"
 #import "Reachability.h"
 
 #import "Masonry.h"
 
+#import "RequestManager.h"
 
 #endif /* PrefixHeader_pch */

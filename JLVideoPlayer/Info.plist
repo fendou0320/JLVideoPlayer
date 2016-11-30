@@ -35,6 +35,10 @@
     <string>cameraDesciption</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>photoLibraryDesciption</string>
-    
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 </dict>
 </plist>

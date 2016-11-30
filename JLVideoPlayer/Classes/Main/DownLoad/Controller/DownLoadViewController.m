@@ -19,6 +19,22 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = RandomColor;
 
+    NSString *url = @"http://cbox.cntv.cn/json2015/other/scyx/index.json";
+    
+    NSURLSessionDataTask *task = [RequestManager requestGetWithURL:url beforeBlock:^{
+        
+    } completeBlock:^(id result) {
+        
+        NSLog(@"%@", result);
+        
+    } errorBlock:^(NSError *error) {
+        
+    } endBlock:^{
+        
+    }];
+        
+
+    
 }
 
 - (void)didReceiveMemoryWarning {
