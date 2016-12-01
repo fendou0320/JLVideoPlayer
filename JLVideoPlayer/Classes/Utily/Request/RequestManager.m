@@ -19,8 +19,9 @@ static AFHTTPSessionManager *_manager;
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         //申明返回的结果是json类型
         manager.responseSerializer = [AFJSONResponseSerializer serializer];
-        //申明请求的数据是json类型
-        manager.requestSerializer=[AFJSONRequestSerializer serializer];
+        //申明发送的数据是二进制类型
+        manager.requestSerializer=[AFHTTPRequestSerializer serializer];
+        manager.requestSerializer.stringEncoding = NSUTF8StringEncoding;
         //如果报接受类型不一致请替换一致text/html或别的
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/html",@"text/json",@"text/plain",@"text/javascript",@"text/xml",@"image/*", nil];
         //清求时间设置
@@ -56,40 +57,11 @@ static AFHTTPSessionManager *_manager;
 //    manager.securityPolicy.allowInvalidCertificates = YES;
 //    [manager.securityPolicy setValidatesDomainName:NO];
 //}
-////基本配置
-//{
-//    switch (sg_requestType) {
-//        case kHYBRequestTypeJSON: {
-//            manager.requestSerializer = [AFJSONRequestSerializer serializer];
-//            break;
-//        }
-//        case kHYBRequestTypePlainText: {
-//            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-//            break;
-//        }
-//        default: {
-//            break;
-//        }
-//    }
-//    
-//    switch (sg_responseType) {
-//        case kHYBResponseTypeJSON: {
-//            manager.responseSerializer = [AFJSONResponseSerializer serializer];
-//            break;
-//        }
-//        case kHYBResponseTypeXML: {
-//            manager.responseSerializer = [AFXMLParserResponseSerializer serializer];
-//            break;
-//        }
-//        case kHYBResponseTypeData: {
-//            manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-//            break;
-//        }
-//        default: {
-//            break;
-//        }
-//    }
-//}
+
+#pragma mark - get请求
++(NSURLSessionDataTask *)requestGetWithURL:(NSString *)url completeBlock:(RequestFinishBlock)finishBlock errorBlock:(RequestErrorBlcok)errorBlock{
+    return [RequestManager requestGetWithURL:url beforeBlock:nil completeBlock:finishBlock errorBlock:errorBlock endBlock:nil];
+}
 
 +(NSURLSessionDataTask *)requestGetWithURL:(NSString *)url beforeBlock:(DefaultBlock)beforeBlock completeBlock:(RequestFinishBlock)finishBlock errorBlock:(RequestErrorBlcok)errorBlock endBlock:(DefaultBlock)endBlock{
 
@@ -108,21 +80,7 @@ static AFHTTPSessionManager *_manager;
     NSURLSessionDataTask *task = [manager GET:urlUTF8 parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
 
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-      
-       // NSString *resultString = [NSString stringWithString:operation.responseString];
-        NSData *resData = [[NSData alloc] initWithData:[responseObject dataUsingEncoding:NSUTF32BigEndianStringEncoding]];
-        NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];
 
-        
-  //      NSLog(@"%@", [responseObject class]);
-        
-   // NSDictionary *weatherDic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-     //   NSData *resData = [[NSData alloc] initWithData:[responseObject dataUsingEncoding:NSUTF8StringEncoding]];
-
-     //   NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-   //     NSString *resultDic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-
-        
 #ifdef DEBUG
         NSLog(@"返回数据： %@", responseObject);
 #endif
@@ -138,6 +96,10 @@ static AFHTTPSessionManager *_manager;
     return task;
 }
 
+#pragma mark - post请求
++(NSURLSessionDataTask *)requestPostWithURL:(NSString *)url parameters:(NSDictionary*)params completeBlock:(RequestFinishBlock)finishBlock errorBlock:(RequestErrorBlcok)errorBlock{
+    return [RequestManager requestPostWithURL:url parameters:params beforeBlock:nil completeBlock:finishBlock errorBlock:errorBlock endBlock:nil];
+}
 
 +(NSURLSessionDataTask *)requestPostWithURL:(NSString *)url parameters:(NSDictionary*)params beforeBlock:(DefaultBlock)beforeBlock completeBlock:(RequestFinishBlock)finishBlock errorBlock:(RequestErrorBlcok)errorBlock endBlock:(DefaultBlock)endBlock{
 
@@ -157,13 +119,10 @@ static AFHTTPSessionManager *_manager;
     NSURLSessionDataTask *task = [manager POST:urlUTF8 parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        NSString *resultString = [NSString stringWithString: responseObject];
-        NSData *resData = [[NSData alloc] initWithData:[resultString dataUsingEncoding:NSUTF8StringEncoding]];
-        NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];
 #ifdef DEBUG
-        NSLog(@"返回数据： %@", resultString);
+        NSLog(@"返回数据： %@", responseObject);
 #endif
-        if (finishBlock) finishBlock(resultDic);
+        if (finishBlock) finishBlock(responseObject);
         if (endBlock) endBlock();
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -175,16 +134,155 @@ static AFHTTPSessionManager *_manager;
     return task;
 }
 
+#pragma mark - 上传图片
++(NSURLSessionDataTask *)upLoadWithUrl: (NSString *)url
+                                 image: (UIImage *)image
+                              filename: (NSString *)fileName
+                                  name: (NSString *)name
+                              mimeType:(NSString *)mimeType
+                            parameters:(NSDictionary *)parameters
+                              progress:(upLoadProgressBlock)progress
+                               success:(SuccessBlock)success
+                                  fail:(FailureBlock)fail{
 
-+(void)cancelAllRequest{
-
+    if (url == nil || url.length == 0) {
+        url = @"";
+    }
+    //去掉空字符串
+    NSString *urlStr = [url stringByReplacingOccurrencesOfString:@" " withString:@""];
+    //utf8转码
+    NSString *urlUTF8 = [NSString stringWithString:[urlStr stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
+    AFHTTPSessionManager *manager = [RequestManager shareManager];
+    NSURLSessionDataTask *task = [manager POST:urlUTF8 parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        //上传图片
+        NSData *imageData = UIImageJPEGRepresentation(image, 1);
+        NSString *imageFileName = fileName;
+        //如果名字为空，用时间戳建个名字
+        if (fileName == nil || ![fileName isKindOfClass:[NSString class]] || fileName.length == 0) {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            formatter.dateFormat = @"yyyyMMddHHmmss";
+            NSString *str = [formatter stringFromDate:[NSDate date]];
+            imageFileName = [NSString stringWithFormat:@"%@.jpg", str];
+        }
+        // 上传图片，以文件流的格式
+        [formData appendPartWithFileData:imageData name:name fileName:imageFileName mimeType:mimeType];
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        //显示进度
+        if (progress) {
+            progress(uploadProgress.completedUnitCount, uploadProgress.totalUnitCount);
+        }
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //上传成功
+        if (success) {
+            success(responseObject);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        //上传失败
+        if (fail) {
+            fail(error);
+        }
+    }];
+    return task;
 }
 
+#pragma mark - 上传文件
++ (NSURLSessionUploadTask *)uploadFileWithUrl: (NSString *)url
+                              uploadingFile: (NSString *)uploadingFile
+                                   progress: (upLoadProgressBlock)progress
+                                    success: (SuccessBlock)successBlock
+                                       fail: (FailureBlock)failBlock{
+    if (url == nil || url.length == 0) {
+        url = @"";
+    }
+    //去掉空字符串
+    NSString *urlStr = [url stringByReplacingOccurrencesOfString:@" " withString:@""];
+    //utf8转码
+    NSString *urlUTF8 = [NSString stringWithString:[urlStr stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:urlUTF8]];
+    
+    AFHTTPSessionManager *manager = [RequestManager shareManager];
+    
+    NSURLSessionUploadTask *task = [manager uploadTaskWithRequest:downloadRequest fromFile:[NSURL URLWithString:uploadingFile] progress:^(NSProgress * _Nonnull uploadProgress) {
+        if (progress) {
+            progress(uploadProgress.completedUnitCount, uploadProgress.totalUnitCount);
+        }
+    } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        
+        if (error) {
+            if (failBlock) {
+                failBlock(error);
+            }
+        }else{
+            if (successBlock) {
+                successBlock(responseObject);
+            }
+        }
+    }];
+    return task;
+}
+
+#pragma mark - 下载文件
++(NSURLSessionDownloadTask *)downLoadWithUrl: (NSString *)url
+                                  saveToPath: (NSString *)saveToPath
+                                    progress: (downLoadProgressBlock)progressBlock
+                                     success: (SuccessBlock)successBlock
+                                     failure: (FailureBlock)failBlock{
+    if (url == nil || url.length == 0) {
+        url = @"";
+    }
+    //去掉空字符串
+    NSString *urlStr = [url stringByReplacingOccurrencesOfString:@" " withString:@""];
+    //utf8转码
+    NSString *urlUTF8 = [NSString stringWithString:[urlStr stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    
+    AFHTTPSessionManager *manager = [RequestManager shareManager];
+    NSURLSessionDownloadTask *task = [manager downloadTaskWithRequest:downloadRequest progress:^(NSProgress * _Nonnull downloadProgress) {
+        if (progressBlock) {
+            progressBlock(downloadProgress.completedUnitCount, downloadProgress.totalUnitCount);
+        }
+    } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
+        //返回地址
+        return [NSURL URLWithString:saveToPath];
+    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+        if (error == nil) {
+            //下载成功
+            if (successBlock) {
+                successBlock(response);
+            }
+        }else{
+            //下载失败
+            if (failBlock) {
+                failBlock(error);
+            }
+        }
+    }];
+    
+    return task;
+}
+
+#pragma mark - 结束请求
++(void)cancelAllRequest{
+
+    AFHTTPSessionManager *manager = [RequestManager shareManager];
+    for (NSURLSessionDataTask *task in [manager tasks]) {
+        [task cancel];
+    }
+}
+
+//NSURLSessionTaskStateRunning = 0,
+//NSURLSessionTaskStateSuspended = 1,
+//NSURLSessionTaskStateCanceling = 2,
+//NSURLSessionTaskStateCompleted = 3,
 
 +(void)cancelRequest: (NSURLSessionDataTask *)task{
 
-    
+    if ((task.state == NSURLSessionTaskStateRunning)||(task.state == NSURLSessionTaskStateSuspended)) {
+        [task cancel];
+    }
 }
 
 

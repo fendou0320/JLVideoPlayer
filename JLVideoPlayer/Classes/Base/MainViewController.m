@@ -104,14 +104,14 @@
     imageView.image = [UIImage imageNamed:@"tab_bg_all.png"];
     [self.tabBar addSubview:imageView];
     
-    NSArray *imageNames = @[@"usercourse",@"usercourse",@"usercourse",@"usercourse",@"usercourse",@"usercourse",@"usercourse"];//me_selected
-    NSArray *imageSelectNames = @[@"usercourse_selected",@"found_selected",@"usercourse_selected",@"me_selected_selected",@"usercourse_selected",@"usercourse_selected",@"usercourse_selected"];
+    NSArray *imageNames = @[@"course_normal",@"course_normal",@"course_normal",@"course_normal",@"course_normal",@"course_normal",@"course_normal"];//me_selected
+//    NSArray *imageSelectNames = @[@"course_selected",@"course_selected",@"course_selected",@"course_selected",@"course_selected",@"course_selected",@"course_selected"];
 
     
     NSArray *titles = @[@"推荐",@"直播",@"栏目",@"互动",@"我的",@"下载",@"other"];
     
     //创建选中视图
-    selectImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"head_image_19.png"]];
+    selectImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"course_selected.png"]];
     
     selectImg.frame = CGRectMake(0, 0, 55, 45);
     selectImg.backgroundColor = [UIColor purpleColor];
@@ -124,13 +124,13 @@
         
         //取出图片名
         NSString *imageName  = imageNames[i];
-        NSString *selectImageName = imageSelectNames[i];
+//        NSString *selectImageName = imageSelectNames[i];
         
         //取出标题
         NSString *title =  titles[i];
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [btn setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-        [btn setImage:[UIImage imageNamed:selectImageName] forState:UIControlStateSelected];
+//        [btn setImage:[UIImage imageNamed:selectImageName] forState:UIControlStateSelected];
 
         [btn setTitle:title forState:UIControlStateNormal];
         [btn setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];
