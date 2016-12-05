@@ -77,6 +77,7 @@
 		04C4277E1DDEE877009CBFFC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C4277D1DDEE877009CBFFC /* AudioToolbox.framework */; };
 		04C427801DDEE8DD009CBFFC /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C4277F1DDEE8DD009CBFFC /* CoreImage.framework */; };
 		04C427821DDEE91D009CBFFC /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C427811DDEE91D009CBFFC /* OpenGLES.framework */; };
+		04D548641DF54A9E00F2325C /* SegmentDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D548631DF54A9E00F2325C /* SegmentDownloader.m */; };
 		04D8A13B1DD9AF7C00A53096 /* ScanQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D8A13A1DD9AF7C00A53096 /* ScanQRCodeViewController.m */; };
 		04F613AD1DE8348F00E8FE71 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04F613AC1DE8348F00E8FE71 /* SystemConfiguration.framework */; };
 		04F613B11DE83A6B00E8FE71 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F613B01DE83A6B00E8FE71 /* Reachability.m */; };
@@ -317,6 +318,8 @@
 		04C4277D1DDEE877009CBFFC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		04C4277F1DDEE8DD009CBFFC /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		04C427811DDEE91D009CBFFC /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		04D548621DF54A9E00F2325C /* SegmentDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentDownloader.h; sourceTree = "<group>"; };
+		04D548631DF54A9E00F2325C /* SegmentDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentDownloader.m; sourceTree = "<group>"; };
 		04D8A1391DD9AF7C00A53096 /* ScanQRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanQRCodeViewController.h; sourceTree = "<group>"; };
 		04D8A13A1DD9AF7C00A53096 /* ScanQRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanQRCodeViewController.m; sourceTree = "<group>"; };
 		04F613AC1DE8348F00E8FE71 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -728,6 +731,8 @@
 		040E803F1DB5FE3800663F84 /* Down */ = {
 			isa = PBXGroup;
 			children = (
+				04D548621DF54A9E00F2325C /* SegmentDownloader.h */,
+				04D548631DF54A9E00F2325C /* SegmentDownloader.m */,
 			);
 			path = Down;
 			sourceTree = "<group>";
@@ -1479,6 +1484,7 @@
 				040310EE1DE29A0A00A7BA96 /* JLFFMBPlayer.m in Sources */,
 				049973941DEBE5C300451F4D /* ColumnChosenModel.m in Sources */,
 				047ACD4F1DAD351800AA0A24 /* main.m in Sources */,
+				04D548641DF54A9E00F2325C /* SegmentDownloader.m in Sources */,
 				040E803E1DB5D1D200663F84 /* MainViewController.m in Sources */,
 				040E803C1DB5D1D200663F84 /* BaseNavViewController.m in Sources */,
 				04092F571DB6FEA80097D36F /* OtherViewController.m in Sources */,

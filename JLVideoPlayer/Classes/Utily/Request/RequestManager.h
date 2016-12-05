@@ -122,7 +122,7 @@ typedef void (^downLoadProgressBlock)(int64_t bytesRead, int64_t totalBytesRead)
                                          fail: (FailureBlock)failBlock;
 
 /**
- 下载操作
+ 下载文件
 
  @param url           下载路径
  @param saveToPath    下载到本地哪个路径下
