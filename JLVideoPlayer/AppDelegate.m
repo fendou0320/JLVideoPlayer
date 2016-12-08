@@ -10,6 +10,7 @@
 #import "ViewController.h"
 #import "MainViewController.h"
 
+
 @interface AppDelegate ()
 
 @end
@@ -25,8 +26,18 @@
     [self.window makeKeyAndVisible];
     self.window.rootViewController = [[MainViewController alloc] init];
     
+    //启动网络监听
+    AFNetworkReachabilityStatus status = [MonitoringNetwork monitoringNetworkState];
+    //启动下载列表
+    [DownLoadWrap initDownload];
+
+
+    
     return YES;
 }
+
+
+
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {

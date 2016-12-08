@@ -129,9 +129,9 @@
         //取出标题
         NSString *title =  titles[i];
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btn setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-//        [btn setImage:[UIImage imageNamed:selectImageName] forState:UIControlStateSelected];
-
+        
+//        [btn setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+        
         [btn setTitle:title forState:UIControlStateNormal];
         [btn setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(clickAction:) forControlEvents:UIControlEventTouchUpInside];

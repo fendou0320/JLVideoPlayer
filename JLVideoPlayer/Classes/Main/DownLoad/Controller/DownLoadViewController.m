@@ -23,14 +23,6 @@
 }
 
 
-- (void)downWithName: (NSString *)videoName filePath: (NSString *)filePath{
-
-
-    
-    
-}
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

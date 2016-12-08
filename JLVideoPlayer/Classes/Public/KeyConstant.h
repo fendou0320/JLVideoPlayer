@@ -11,4 +11,9 @@
 
 #import "JLMovieObject.h"
 
+#define kPathDownload @"Downloads"
+
+
+
+
 #endif /* KeyConstant_h */

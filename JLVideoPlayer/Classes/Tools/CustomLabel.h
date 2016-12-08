@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSUInteger, VerticalAlignment){
+    
+    VerticalAlignmentTop = 0, // default
+    VerticalAlignmentMiddle,
+    VerticalAlignmentBottom,
+};
+
 @interface CustomLabel : UILabel
+
+@property (nonatomic) VerticalAlignment verticalAlignment;
+
 
 @end
