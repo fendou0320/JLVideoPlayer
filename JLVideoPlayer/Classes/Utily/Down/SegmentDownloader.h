@@ -19,5 +19,9 @@
 
 + (id)initWithUrl:(NSString*)url andFilePath:(NSString*)filePath andVideoName:(NSString*)videoName;
 
+-(void)start:(BOOL)isPass;
+
+- (void)clean;
+
 
 @end

@@ -34,7 +34,28 @@
     return downLoader;
 }
 
+-(void)start:(BOOL)isPass{
 
+    NSString *pathPrefix = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0];
+    NSString *saveTo = [[pathPrefix stringByAppendingPathComponent:kPathDownload] stringByAppendingPathComponent:self.filePath];
+    NSFileManager *fileM = [NSFileManager defaultManager];
+    NSString *destinationPath = [saveTo stringByAppendingPathComponent:self.fileName];
+
+    if ([fileM fileExistsAtPath:destinationPath]) {
+        //
+        
+    }
+    
+    
+}
+
+
+//- (void)clean{
+//
+//    if () {
+//        
+//    }
+//}
 
 
 

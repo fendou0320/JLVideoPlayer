@@ -32,5 +32,12 @@
 
 #import "MonitoringNetwork.h"
 
+#import "AppDownLoadingManager.h"
+
+#import "JackDownHelper.h"
+
+#import "CommonHelper.h"
+
+#import "AppUtily.h"
 
 #endif /* PrefixHeader_pch */

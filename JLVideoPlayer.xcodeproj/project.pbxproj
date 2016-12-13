@@ -62,6 +62,9 @@
 		049973991DEBE5C300451F4D /* ColumnViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 049973921DEBE5C300451F4D /* ColumnViewModel.m */; };
 		0499739C1DEBF1C700451F4D /* CategoryItemMode.m in Sources */ = {isa = PBXBuildFile; fileRef = 0499739B1DEBF1C700451F4D /* CategoryItemMode.m */; };
 		0499739F1DEC1D4F00451F4D /* RequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0499739E1DEC1D4F00451F4D /* RequestManager.m */; };
+		04A133741DFA941A00B4CB90 /* JackDownHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A133731DFA941900B4CB90 /* JackDownHelper.m */; };
+		04A133781DFAAA9D00B4CB90 /* CommonHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A133771DFAAA9D00B4CB90 /* CommonHelper.m */; };
+		04A1337B1DFAAE6800B4CB90 /* AppUtily.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1337A1DFAAE6800B4CB90 /* AppUtily.m */; };
 		04A807EF1DAF8F5000B2E306 /* AppIcon-129x29@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A807271DAF8F5000B2E306 /* AppIcon-129x29@2x~ipad.png */; };
 		04A807F01DAF8F5000B2E306 /* AppIcon-129x29~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A807281DAF8F5000B2E306 /* AppIcon-129x29~ipad.png */; };
 		04A807F11DAF8F5000B2E306 /* AppIcon-140x40@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A807291DAF8F5000B2E306 /* AppIcon-140x40@2x~ipad.png */; };
@@ -82,6 +85,7 @@
 		04C4277E1DDEE877009CBFFC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C4277D1DDEE877009CBFFC /* AudioToolbox.framework */; };
 		04C427801DDEE8DD009CBFFC /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C4277F1DDEE8DD009CBFFC /* CoreImage.framework */; };
 		04C427821DDEE91D009CBFFC /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C427811DDEE91D009CBFFC /* OpenGLES.framework */; };
+		04CA0CE01DFE40ED0066B19F /* VideoDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CA0CDF1DFE40ED0066B19F /* VideoDownloader.m */; };
 		04D548641DF54A9E00F2325C /* SegmentDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D548631DF54A9E00F2325C /* SegmentDownloader.m */; };
 		04D8A13B1DD9AF7C00A53096 /* ScanQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D8A13A1DD9AF7C00A53096 /* ScanQRCodeViewController.m */; };
 		04F613AD1DE8348F00E8FE71 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04F613AC1DE8348F00E8FE71 /* SystemConfiguration.framework */; };
@@ -309,6 +313,12 @@
 		0499739B1DEBF1C700451F4D /* CategoryItemMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryItemMode.m; sourceTree = "<group>"; };
 		0499739D1DEC1D4F00451F4D /* RequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestManager.h; sourceTree = "<group>"; };
 		0499739E1DEC1D4F00451F4D /* RequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestManager.m; sourceTree = "<group>"; };
+		04A133721DFA941900B4CB90 /* JackDownHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JackDownHelper.h; sourceTree = "<group>"; };
+		04A133731DFA941900B4CB90 /* JackDownHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JackDownHelper.m; sourceTree = "<group>"; };
+		04A133761DFAAA9D00B4CB90 /* CommonHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonHelper.h; sourceTree = "<group>"; };
+		04A133771DFAAA9D00B4CB90 /* CommonHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonHelper.m; sourceTree = "<group>"; };
+		04A133791DFAAE6800B4CB90 /* AppUtily.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppUtily.h; sourceTree = "<group>"; };
+		04A1337A1DFAAE6800B4CB90 /* AppUtily.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppUtily.m; sourceTree = "<group>"; };
 		04A807271DAF8F5000B2E306 /* AppIcon-129x29@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-129x29@2x~ipad.png"; sourceTree = "<group>"; };
 		04A807281DAF8F5000B2E306 /* AppIcon-129x29~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-129x29~ipad.png"; sourceTree = "<group>"; };
 		04A807291DAF8F5000B2E306 /* AppIcon-140x40@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-140x40@2x~ipad.png"; sourceTree = "<group>"; };
@@ -332,6 +342,8 @@
 		04C4277D1DDEE877009CBFFC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		04C4277F1DDEE8DD009CBFFC /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		04C427811DDEE91D009CBFFC /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		04CA0CDE1DFE40ED0066B19F /* VideoDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDownloader.h; sourceTree = "<group>"; };
+		04CA0CDF1DFE40ED0066B19F /* VideoDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDownloader.m; sourceTree = "<group>"; };
 		04D548621DF54A9E00F2325C /* SegmentDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentDownloader.h; sourceTree = "<group>"; };
 		04D548631DF54A9E00F2325C /* SegmentDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentDownloader.m; sourceTree = "<group>"; };
 		04D8A1391DD9AF7C00A53096 /* ScanQRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanQRCodeViewController.h; sourceTree = "<group>"; };
@@ -482,6 +494,7 @@
 		040E7FF51DB5C3B000663F84 /* Utily */ = {
 			isa = PBXGroup;
 			children = (
+				04A133751DFAAA8B00B4CB90 /* DownHelp */,
 				0451EB231DF902C500295117 /* MonitoringNetwork */,
 				040E803F1DB5FE3800663F84 /* Down */,
 				040E80401DB5FE3800663F84 /* Fav */,
@@ -750,8 +763,12 @@
 				04B964751DF6B1C800383A32 /* DownLoadManager.m */,
 				04B964771DF6B97D00383A32 /* DownLoadWrap.h */,
 				04B964781DF6B97D00383A32 /* DownLoadWrap.m */,
+				04A133721DFA941900B4CB90 /* JackDownHelper.h */,
+				04A133731DFA941900B4CB90 /* JackDownHelper.m */,
 				0451EB271DF9078D00295117 /* AppDownLoadingManager.h */,
 				0451EB281DF9078D00295117 /* AppDownLoadingManager.m */,
+				04CA0CDE1DFE40ED0066B19F /* VideoDownloader.h */,
+				04CA0CDF1DFE40ED0066B19F /* VideoDownloader.m */,
 			);
 			path = Down;
 			sourceTree = "<group>";
@@ -1123,6 +1140,17 @@
 				049973921DEBE5C300451F4D /* ColumnViewModel.m */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		04A133751DFAAA8B00B4CB90 /* DownHelp */ = {
+			isa = PBXGroup;
+			children = (
+				04A133761DFAAA9D00B4CB90 /* CommonHelper.h */,
+				04A133771DFAAA9D00B4CB90 /* CommonHelper.m */,
+				04A133791DFAAE6800B4CB90 /* AppUtily.h */,
+				04A1337A1DFAAE6800B4CB90 /* AppUtily.m */,
+			);
+			path = DownHelp;
 			sourceTree = "<group>";
 		};
 		04A807221DAF8F5000B2E306 /* PlayImage */ = {
@@ -1516,11 +1544,13 @@
 				040E803E1DB5D1D200663F84 /* MainViewController.m in Sources */,
 				040E803C1DB5D1D200663F84 /* BaseNavViewController.m in Sources */,
 				04092F571DB6FEA80097D36F /* OtherViewController.m in Sources */,
+				04A133741DFA941A00B4CB90 /* JackDownHelper.m in Sources */,
 				0451EB291DF9078D00295117 /* AppDownLoadingManager.m in Sources */,
 				04C4277A1DDED62D009CBFFC /* JLMovieObject.m in Sources */,
 				0499739F1DEC1D4F00451F4D /* RequestManager.m in Sources */,
 				04D8A13B1DD9AF7C00A53096 /* ScanQRCodeViewController.m in Sources */,
 				040E7FF71DB5C3B000663F84 /* CustomLabel.m in Sources */,
+				04CA0CE01DFE40ED0066B19F /* VideoDownloader.m in Sources */,
 				04B964761DF6B1C800383A32 /* DownLoadManager.m in Sources */,
 				0429C30E1DF7BF4300338EB0 /* DownModel.m in Sources */,
 				040E80281DB5D08E00663F84 /* LiveViewController.m in Sources */,
@@ -1529,12 +1559,14 @@
 				049973931DEBE5C300451F4D /* ColumnChannelModel.m in Sources */,
 				040E802E1DB5D0CF00663F84 /* HuDongViewController.m in Sources */,
 				049973991DEBE5C300451F4D /* ColumnViewModel.m in Sources */,
+				04A1337B1DFAAE6800B4CB90 /* AppUtily.m in Sources */,
 				0451EB261DF902D600295117 /* MonitoringNetwork.m in Sources */,
 				040E802B1DB5D09D00663F84 /* LanMuViewController.m in Sources */,
 				04B964791DF6B97D00383A32 /* DownLoadWrap.m in Sources */,
 				04537D001DDC3832005C614E /* GenerateCodeViewController.m in Sources */,
 				040E80311DB5D0E400663F84 /* DownLoadViewController.m in Sources */,
 				047AB5331DE593E000B3A565 /* CustomHeaderView.m in Sources */,
+				04A133781DFAAA9D00B4CB90 /* CommonHelper.m in Sources */,
 				040E80251DB5D08000663F84 /* MineViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

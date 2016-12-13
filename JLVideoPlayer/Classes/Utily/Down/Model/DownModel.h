@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VideoDownloader.h"
 
 
 /**
@@ -94,6 +95,8 @@ typedef NS_ENUM(NSUInteger, DownModelState){
 @property (nonatomic,retain) NSString *adId;
 @property (nonatomic,retain) NSString *dianboSetName;
 
+
+@property (nonatomic, strong) VideoDownloader *downLoader;
 
 
 @end

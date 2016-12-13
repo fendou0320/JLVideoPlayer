@@ -30,12 +30,9 @@
     AFNetworkReachabilityStatus status = [MonitoringNetwork monitoringNetworkState];
     //启动下载列表
     [DownLoadWrap initDownload];
-
-
     
     return YES;
 }
-
 
 
 

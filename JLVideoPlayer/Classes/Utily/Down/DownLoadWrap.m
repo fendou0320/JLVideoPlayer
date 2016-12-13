@@ -11,22 +11,7 @@
 static DownLoadWrap * downWrap;
 
 @interface DownLoadWrap ()
-/**
- 正在下载的文件数组
- */
-@property (nonatomic, strong) NSMutableArray *appDownLoadingArr;
-/**
- 已经下载的文件数组
- */
-@property (nonatomic, strong) NSMutableArray *appDownLoadedArr;
-/**
- 下载中删除的文件数组
- */
-@property (nonatomic, strong) NSMutableArray *appDownLoadingDeleteArr;
-/**
- 当前正在下载的文件
- */
-@property (nonatomic, strong) DownModel *currentDownModel;
+
 @end
 
 @implementation DownLoadWrap
@@ -43,10 +28,15 @@ static DownLoadWrap * downWrap;
 + (void)initDownload{
 
     DownLoadWrap *downLoad = [DownLoadWrap getInstance];
+    
     downLoad.appDownLoadedArr = [NSMutableArray arrayWithCapacity:1];
     downLoad.appDownLoadingArr = [NSMutableArray arrayWithCapacity:1];
+
+    downLoad.app_downLoadedSemaphore = dispatch_semaphore_create(1);
+    downLoad.app_downLoadingSemaphore = dispatch_semaphore_create(1);
+    downLoad.app_downLoadingProgressDicSemaphore = dispatch_semaphore_create(1);
+    downLoad.app_downLoadDeleteSemaphore = dispatch_semaphore_create(1);
     
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
     //创建单一线程执行
     dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
     dispatch_async(queue, ^{
@@ -146,7 +136,8 @@ static DownLoadWrap * downWrap;
             }
             if (status == AFNetworkReachabilityStatusReachableViaWiFi) {
                 //当前网络状态是wifi
-                
+                AppDownLoadingManager *manager = [AppDownLoadingManager shareAppDownLoadingManager];
+                [manager downLoadingArrayAddDownModel: downWrap.currentDownModel];
             }
         }
     });
@@ -154,14 +145,40 @@ static DownLoadWrap * downWrap;
 }
 
 
-+ (NSMutableArray *)getDownLoadingArr{
+- (NSMutableArray *)getDownLoadingArr{
     
     return downWrap.appDownLoadingArr;
 }
 
-+ (NSMutableArray *)getDownLoadedArr{
+- (NSMutableArray *)getDownLoadedArr{
 
     return downWrap.appDownLoadedArr;
+}
+
+- (void)netChangedCacheManager{
+    
+    BOOL allowCache = NO;
+    AFNetworkReachabilityStatus status = [MonitoringNetwork monitoringNetworkState];
+    if (status == AFNetworkReachabilityStatusReachableViaWiFi) {
+        allowCache = YES;
+    }else{
+        allowCache = NO;
+    }
+    //允许缓存
+    if (allowCache == YES) {
+        
+        if (_app_downLoadingSemaphore) {
+            for (DownModel *model in _appDownLoadingArr) {
+                if (model.downModelState == DownModelState_Loading) {
+                    if (model.downLoader) {
+                        [model.downLoader ]
+                    }
+                }
+            }
+        }
+        
+    }
+    
 }
 
 

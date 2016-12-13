@@ -36,6 +36,14 @@
     //    btn.backgroundColor = RandomColor;
     [self.view addSubview:btn1];
     
+    [self alertView];
+    
+}
+
+- (void)alertView{
+
+    [AppUtily showAlertViewWithTitle:@"温馨提示" message:@"示例信息" viewCtrl: self];
+    
 }
 
 - (void)ScanQRCodeclickAction:(UIButton *)btn{
