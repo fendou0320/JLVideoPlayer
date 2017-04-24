@@ -22,7 +22,6 @@ static AFHTTPSessionManager *_manager;
         //申明发送的数据是二进制类型
         manager.requestSerializer=[AFHTTPRequestSerializer serializer];
         manager.requestSerializer.stringEncoding = NSUTF8StringEncoding;
-        //如果报接受类型不一致请替换一致text/html或别的
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/html",@"text/json",@"text/plain",@"text/javascript",@"text/xml",@"image/*", nil];
         //清求时间设置
         manager.requestSerializer.timeoutInterval = 30;
@@ -63,6 +62,7 @@ static AFHTTPSessionManager *_manager;
     return [RequestManager requestGetWithURL:url beforeBlock:nil completeBlock:finishBlock errorBlock:errorBlock endBlock:nil];
 }
 
+#pragma mark - get请求总类
 +(NSURLSessionDataTask *)requestGetWithURL:(NSString *)url beforeBlock:(DefaultBlock)beforeBlock completeBlock:(RequestFinishBlock)finishBlock errorBlock:(RequestErrorBlcok)errorBlock endBlock:(DefaultBlock)endBlock{
 
     if (url == nil || url.length == 0) {
@@ -101,6 +101,7 @@ static AFHTTPSessionManager *_manager;
     return [RequestManager requestPostWithURL:url parameters:params beforeBlock:nil completeBlock:finishBlock errorBlock:errorBlock endBlock:nil];
 }
 
+#pragma mark - post请求总类
 +(NSURLSessionDataTask *)requestPostWithURL:(NSString *)url parameters:(NSDictionary*)params beforeBlock:(DefaultBlock)beforeBlock completeBlock:(RequestFinishBlock)finishBlock errorBlock:(RequestErrorBlcok)errorBlock endBlock:(DefaultBlock)endBlock{
 
     if (url == nil || url.length == 0) {
@@ -236,8 +237,7 @@ static AFHTTPSessionManager *_manager;
     NSString *urlStr = [url stringByReplacingOccurrencesOfString:@" " withString:@""];
     //utf8转码
     NSString *urlUTF8 = [NSString stringWithString:[urlStr stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:urlUTF8]];
     
     AFHTTPSessionManager *manager = [RequestManager shareManager];
     NSURLSessionDownloadTask *task = [manager downloadTaskWithRequest:downloadRequest progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -264,7 +264,7 @@ static AFHTTPSessionManager *_manager;
     return task;
 }
 
-#pragma mark - 结束请求
+#pragma mark - 结束所有请求
 +(void)cancelAllRequest{
 
     AFHTTPSessionManager *manager = [RequestManager shareManager];
@@ -273,13 +273,13 @@ static AFHTTPSessionManager *_manager;
     }
 }
 
-//NSURLSessionTaskStateRunning = 0,
-//NSURLSessionTaskStateSuspended = 1,
-//NSURLSessionTaskStateCanceling = 2,
-//NSURLSessionTaskStateCompleted = 3,
-
+#pragma mark - 取消指定请求
 +(void)cancelRequest: (NSURLSessionDataTask *)task{
 
+    //NSURLSessionTaskStateRunning = 0,
+    //NSURLSessionTaskStateSuspended = 1,
+    //NSURLSessionTaskStateCanceling = 2,
+    //NSURLSessionTaskStateCompleted = 3,
     if ((task.state == NSURLSessionTaskStateRunning)||(task.state == NSURLSessionTaskStateSuspended)) {
         [task cancel];
     }

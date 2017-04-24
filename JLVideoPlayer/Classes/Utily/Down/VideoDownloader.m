@@ -31,7 +31,7 @@
         
         for (SegmentDownloader *obj in downloadArray) {
             
-            [obj ]
+//            [obj ]
         }
     }
     

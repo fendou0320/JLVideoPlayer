@@ -7,6 +7,7 @@
 //
 
 #import "HuDongViewController.h"
+#import "DongHuaViewController.h"
 
 @interface HuDongViewController ()
 
@@ -19,7 +20,22 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = RandomColor;
 
+    UIButton *clickBtn = [[UIButton alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];
+    [clickBtn setTitle:@"各种动画" forState:UIControlStateNormal];
+    clickBtn.backgroundColor = [UIColor greenColor];
+    [clickBtn addTarget:self action:@selector(sendBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview: clickBtn];
+    
 }
+
+- (void)sendBtnClicked:(UIButton *)sender{
+
+    DongHuaViewController *donghua = [[DongHuaViewController alloc] init];
+    
+    [self.navigationController pushViewController:donghua animated:YES];
+    
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

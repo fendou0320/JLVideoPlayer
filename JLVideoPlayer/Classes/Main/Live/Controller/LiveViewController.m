@@ -19,10 +19,19 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = RandomColor;
     
-    NSInteger count = MinCount(100, 200);
-    NSLog(@"%ld", count);
-    
-    
+//    NSInteger count = MinCount(100, 200);
+//    NSLog(@"%ld", count);
+//    
+//    
+//    //网络调用
+//    NSString *url = @"http://serv.cbox.cntv.cn/json/cbox6/yidongzhupeizhi/index.json";
+//    [RequestManager requestGetWithURL:url completeBlock:^(id result) {
+//       
+//        NSLog(@"%@", result);
+//        
+//    } errorBlock:^(NSError *error) {
+//        
+//    }];
     
     
     

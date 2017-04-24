@@ -30,7 +30,7 @@ typedef void (^downLoadProgressBlock)(int64_t bytesRead, int64_t totalBytesRead)
 @interface RequestManager : NSObject
 
 /**
- get请求
+ get简单请求
 
  @param url         请求地址
  @param finishBlock 请求成功
@@ -41,7 +41,7 @@ typedef void (^downLoadProgressBlock)(int64_t bytesRead, int64_t totalBytesRead)
 +(NSURLSessionDataTask *)requestGetWithURL:(NSString *)url completeBlock:(RequestFinishBlock)finishBlock errorBlock:(RequestErrorBlcok)errorBlock;
 
 /**
- get请求
+ get复杂请求
 
  @param url         请求地址
  @param beforeBlock 请求之前的操作
@@ -54,7 +54,7 @@ typedef void (^downLoadProgressBlock)(int64_t bytesRead, int64_t totalBytesRead)
 +(NSURLSessionDataTask *)requestGetWithURL:(NSString *)url beforeBlock:(DefaultBlock)beforeBlock completeBlock:(RequestFinishBlock)finishBlock errorBlock:(RequestErrorBlcok)errorBlock endBlock:(DefaultBlock)endBlock;
 
 /**
- post请求
+ post简单请求
 
  @param url         请求地址
  @param params      请求参数
@@ -66,7 +66,7 @@ typedef void (^downLoadProgressBlock)(int64_t bytesRead, int64_t totalBytesRead)
 +(NSURLSessionDataTask *)requestPostWithURL:(NSString *)url parameters:(NSDictionary*)params completeBlock:(RequestFinishBlock)finishBlock errorBlock:(RequestErrorBlcok)errorBlock;
 
 /**
- post请求
+ post复杂请求
 
  @param url         请求地址
  @param params      请求参数字典

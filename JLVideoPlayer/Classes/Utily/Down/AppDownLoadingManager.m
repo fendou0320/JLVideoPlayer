@@ -109,7 +109,7 @@ static dispatch_semaphore_t startDownSemaphore;
             if (model.downLoader && !model.downLoader.bDownloading && !model.isLoading) {
                 //开始下载
                 model.downLoader.bDownloading = YES;
-                [model.downLoader ]
+//                [model.downLoader ]
             }
             
             

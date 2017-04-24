@@ -20,9 +20,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self creatData];
-    
-    [self creatContentView];
+//    [self creatData];
+//    
+//    [self creatContentView];
 }
 
 - (void)didReceiveMemoryWarning {

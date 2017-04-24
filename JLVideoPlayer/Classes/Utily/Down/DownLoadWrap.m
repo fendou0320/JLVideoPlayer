@@ -171,7 +171,7 @@ static DownLoadWrap * downWrap;
             for (DownModel *model in _appDownLoadingArr) {
                 if (model.downModelState == DownModelState_Loading) {
                     if (model.downLoader) {
-                        [model.downLoader ]
+//                        [model.downLoader ]
                     }
                 }
             }
