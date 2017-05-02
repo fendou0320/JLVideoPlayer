@@ -40,4 +40,6 @@
 
 #import "AppUtily.h"
 
+#import "BaseViewController.h"
+
 #endif /* PrefixHeader_pch */

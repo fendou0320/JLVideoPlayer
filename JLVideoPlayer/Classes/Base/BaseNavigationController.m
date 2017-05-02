@@ -1,23 +1,22 @@
 //
-//  BaseViewController.m
+//  BaseNavigationController.m
 //  JLVideoPlayer
 //
-//  Created by 王江亮 on 16/10/18.
-//  Copyright © 2016年 WangJiangliang. All rights reserved.
+//  Created by UCS on 2017/5/2.
+//  Copyright © 2017年 WangJiangliang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "BaseNavigationController.h"
 
-@interface BaseViewController ()
+@interface BaseNavigationController ()
 
 @end
 
-@implementation BaseViewController
+@implementation BaseNavigationController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)didReceiveMemoryWarning {

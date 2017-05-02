@@ -9,13 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface MonitoringNetwork : NSObject
-
-///**
-// 启动网络监听
-//
-// @return 监听类
-// */
-//+ (instancetype)shareManager;
 /**
  获取当前网络状态
 

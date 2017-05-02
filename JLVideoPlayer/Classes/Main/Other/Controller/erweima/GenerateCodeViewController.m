@@ -21,7 +21,7 @@
     
     CGFloat a = kScreenWidth/2;
     CGFloat b = kScreenHeight/2;
-    UIImage *img1 = [GenerateCode generateImageForString:@"王先生" imageSize:a logoImageSize:b];
+    UIImage *img1 = [GenerateCode generateImageForString:@"https://github.com/fendou0320" imageSize:a logoImageSize:b];
     UIImage *img = [GenerateCode imageBlackToTransparent:img1 withRed:0.2 andGreen:0.5 andBlue:0.5];
     
     UIImageView *scanViewBg = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenWidth/4, kScreenHeight/4, kScreenWidth/2, kScreenHeight/2)];
