@@ -9,6 +9,7 @@
 #ifndef AppConstant_h
 #define AppConstant_h
 
+//获取当前屏幕尺寸
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
 #define kTabBarHeight 49
@@ -39,8 +40,8 @@
 
 // 是否iPad
 #define isPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-// 是否iPad
-#define someThing (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)? ipad: iphone
+//是手机还是ipad
+//#define someThing (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)? ipad: iphone
 
 //获取系统版本
 #define IOS_VERSION ［[UIDevice currentDevice] systemVersion] floatValue]
@@ -52,20 +53,12 @@
 //判断是否 Retina屏、设备是否%fhone 5、是否是iPad
 #define isRetina ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), ［UIScreen mainScreen] currentMode].size) : NO)
 #define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), ［UIScreen mainScreen] currentMode].size) : NO)
-#define isPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
-//判断设备的操做系统是不是ios8
-#define IOS7 (［[UIDevice currentDevice].systemVersion doubleValue] >= 8.0]
+//判断设备的操做系统是不是ios8以上
+#define IOS8 (［[UIDevice currentDevice].systemVersion doubleValue] >= 8.0]
 
-//判断当前设备是不是iphone5
+//判断当前设备是不是iphone5以上
 #define kScreenIphone5 ((［UIScreen mainScreen] bounds].size.height)>=568)
-
-//获取当前屏幕的高度
-#define kMainScreenHeight ([UIScreen mainScreen].applicationFrame.size.height)
-
-//获取当前屏幕的宽度
-#define kMainScreenWidth ([UIScreen mainScreen].applicationFrame.size.width)
-
 
 //定义一个define函数
 #define TT_RELEASE_CF_SAFELY(__REF) { if (nil != (__REF)) { CFRelease(__REF); __REF = nil; } }

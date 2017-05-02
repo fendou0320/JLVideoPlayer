@@ -19,10 +19,7 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = RandomColor;
     
-    
 }
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

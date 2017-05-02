@@ -20,8 +20,17 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+    
+	<key>NSCameraUsageDescription</key>
+	<string>cameraDesciption</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>photoLibraryDesciption</string>
+    
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -30,15 +39,7 @@
 	<array>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-    <key>NSCameraUsageDescription</key>
-    <string>cameraDesciption</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>photoLibraryDesciption</string>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
-    </dict>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>    
 </dict>
 </plist>
